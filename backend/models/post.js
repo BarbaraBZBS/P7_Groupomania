@@ -1,14 +1,18 @@
 const sequelize = require( '../database/sequelize' );
 const DataTypes = require( 'sequelize' );
 
-module.exports = sequelize.define( 'posts', {
+module.exports = sequelize.define( "posts", {
+    // userId: {
+    //     type: DataTypes.STRING, allowNull: false,
+    // },
     title: {
-        type: DataTypes.TEXT, allowNull: true
+        type: DataTypes.TEXT( 'medium' ), allowNull: true, default: ""
     },
     content: {
-        type: DataTypes.TEXT, allowNull: false, validate: {
-            // isnot: [ "^[a-z0-9]+$", 'i' ] @*=
-        }
+        type: DataTypes.TEXT( 'long' ), allowNull: false,
+        // validate: {
+        //     // isnot: [ "^[a-z0-9]+$", 'i' ] @*=
+        // }
     },
     image: {
         type: DataTypes.STRING, allowNull: true
@@ -19,8 +23,8 @@ module.exports = sequelize.define( 'posts', {
     dislikes: {
         type: DataTypes.INTEGER, default: 0
     },
-    usersLiked: [],
-    usersDislikes: []
+    usersLiked: [ DataTypes.STRING ],
+    usersDisliked: [ DataTypes.STRING ]
 }, {
     timestamps: false
 } );

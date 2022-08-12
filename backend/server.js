@@ -1,8 +1,8 @@
 const express = require( 'express' );
+const userRoutes = require( './routes/user' );
+const postRoutes = require( './routes/post' );
 const User = require( './models/user' );
-//const Sequelize = require( 'sequelize' );
 const Post = require( './models/post' );
-const userRoutes = require( './routes/user' )
 //const cors = require( 'cors' );
 //const bodyParser = require( 'body-parser' );
 const app = express();
@@ -23,38 +23,19 @@ app.use( ( req, res, next ) => {
 app.use( express.json() );
 app.use( express.urlencoded( { extended: true } ) );
 
-//require( './routes/user.routes' )( app );
-
 app.use( '/api/users', userRoutes );
-
-// sequelize
-//     .authenticate()
-//     .then( () => {
-//         console.log( 'Connection has been established successfully.' );
-//     } )
-//     .catch( err => {
-//         console.error( 'Unable to connect to the database:', err );
-//     } );
+app.use( '/api/posts', postRoutes );
 
 
+User.sync()
+    .then( () => {
+        console.log( `Database & users table created!` );
+    } );
 
-// User.sync()
-//     .then( () => {
-//         console.log( `Database & users table created!` );
-//     } );
-
-
+Post.sync()
+    .then( () => {
+        console.log( `Database & posts table created!` );
+    } );
 
 
 app.listen( PORT, () => console.log( `Server listening on port ${ PORT }!` ) );
-
-
-//const db = require( './models' );
-
-// //db.sequelize.sync()
-//     .then( () => {
-//         console.log( "Synced db." );
-//     } )
-//     .catch( ( error ) => {
-//         console.log( 'Failed to sync db: ' + error.message );
-//     } );

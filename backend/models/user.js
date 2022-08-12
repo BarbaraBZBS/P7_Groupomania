@@ -1,5 +1,5 @@
 const sequelize = require( '../database/sequelize' );
-const { Sequelize, DataTypes } = require( 'sequelize' );
+const DataTypes = require( 'sequelize' );
 
 module.exports = sequelize.define( "users", {
     email: {
@@ -19,8 +19,3 @@ module.exports = sequelize.define( "users", {
     timestamps: false,
 }
 );
-
-// sequelize.sync( { force: true } )
-//     .then( () => {
-//         console.log( `Database & tables created!` );
-//     } );
