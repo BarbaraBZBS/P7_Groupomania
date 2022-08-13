@@ -1,17 +1,20 @@
 const express = require( 'express' );
-const userRoutes = require( './routes/user' );
-const postRoutes = require( './routes/post' );
-const User = require( './models/user' );
-const Post = require( './models/post' );
 //const cors = require( 'cors' );
 //const bodyParser = require( 'body-parser' );
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+const userRoutes = require( './routes/user' );
+const postRoutes = require( './routes/post' );
+const User = require( './models/user' );
+const Post = require( './models/post' );
+const path = require( 'path' );
 // const corsOptions = {
 //     origin: "http://localhost:3000"
 // };
 // app.use(cors(corsOptions));
+
+app.use( express.json() );
+app.use( express.urlencoded( { extended: true } ) );
 
 app.use( ( req, res, next ) => {
     res.setHeader( 'Access-Control-Allow-Origin', '*' );
@@ -20,9 +23,8 @@ app.use( ( req, res, next ) => {
     next();
 } );
 
-app.use( express.json() );
-app.use( express.urlencoded( { extended: true } ) );
 
+app.use( '/images', express.static( path.join( __dirname, 'images' ) ) );
 app.use( '/api/auth', userRoutes );
 app.use( '/api/posts', postRoutes );
 

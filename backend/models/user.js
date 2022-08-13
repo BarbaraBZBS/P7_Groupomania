@@ -17,5 +17,4 @@ module.exports = sequelize.define( "users", {
     }
 }, {
     timestamps: false,
-}
-);
+} );
