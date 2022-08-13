@@ -2,9 +2,12 @@ const sequelize = require( '../database/sequelize' );
 const DataTypes = require( 'sequelize' );
 
 module.exports = sequelize.define( "posts", {
-    // userId: {
-    //     type: DataTypes.STRING, allowNull: false,
-    // },
+    userId: {
+        type: DataTypes.STRING, allowNull: false,
+    },
+    from: {
+        type: DataTypes.STRING, allowNull: false
+    },
     title: {
         type: DataTypes.TEXT( 'medium' ), allowNull: true, default: ""
     },

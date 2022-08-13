@@ -10,10 +10,10 @@ module.exports = sequelize.define( "users", {
         }
     },
     password: {
-        type: DataTypes.STRING, allowNull: false,
-        validate: {
-            is: [ "^[a-z0-9]+$", 'i' ]
-        }
+        type: DataTypes.STRING( 60 ), allowNull: false,
+        // validate: {
+        //     is: [ "^[0-9a-zA-Z]{60}$", 'i' ]
+        // }
     }
 }, {
     timestamps: false,

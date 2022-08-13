@@ -1,64 +1,47 @@
 const User = require( '../models/user' );
+const bcrypt = require( 'bcrypt' );
+const jwt = require( 'jsonwebtoken' );
 
-
-exports.getAllUsers = ( req, res ) => {
-    User.findAll()
-        .then( ( users ) => {
-            res.json( users )
-        } )
-};
-
-exports.getOneUser = ( req, res ) => {
-    let { id } = req.params;
-    User.findByPk( id )
-        .then( ( user ) => {
-            if ( user ) {
-                res.status( 200 ).json( user )
-            } else {
-                res.status( 404 ).send();
-            }
-        } )
-        .catch( error => res.status( 404 ).json( { error } ) )
-};
-
-exports.createUser = async ( req, res, next ) => {
-    try {
-        await User.create( { email: req.body.email, password: req.body.password } );
-        res.status( 201 ).json( { message: 'user inserted' } );
-        console.log( 'success: user created', req.body );
-    }
-    catch ( error ) {
-        res.status( 400 ).json( { error } )
-        console.log( 'error: user not created', res.statusCode );
-    }
-};
-
-exports.modifyUser = async ( req, res ) => {
-    try {
-        await User.findByPk( req.params.id ).then( ( user ) => {
-            user.update( { email: req.body.email, password: req.body.password } )
-                .then( ( user ) => {
-                    if ( user ) {
-                        res.status( 201 ).json( user )
-                        console.log( 'success: user updated', req.body )
-                    } else {
-                        res.status( 404 ).json( { message: "Cet utilisateur n'existe pas" } )
-                    }
+exports.signup = ( req, res, next ) => {
+    bcrypt.hash( req.body.password, 15 )
+        .then( hash => {
+            User.create( { email: req.body.email, password: hash } )
+                .then( () => {
+                    res.status( 201 ).json( { message: 'user created' } );
+                    console.log( 'success: user created', req.body );
                 } )
-        } );
-    }
-    catch ( error ) {
-        res.status( 400 ).json( { error } );
-        console.log( 'error: user not updated', res.statusCode )
-    }
-};
-
-exports.deleteUser = ( req, res ) => {
-    User.findByPk( req.params.id ).then( ( user ) => {
-        user.destroy();
-    } )
-        .then( ( user ) => {
-            res.sendStatus( 200 );
+                .catch( error => res.status( 400 ).json( { error } ) );
+            console.log( 'error: user not created', res.statusCode );
         } )
         .catch( error => res.status( 400 ).json( { error } ) )
+};
+
+
+exports.login = async ( req, res, next ) => {
+    try {
+        const user = await User.findOne( { where: { email: req.body.email } } )
+        // console.log( req.body.email )
+        // console.log( user )
+        if ( !user ) {
+            return res.status( 401 ).json( { message: 'identifiant(s) incorrect(s)' } );
+        }
+        bcrypt.compare( req.body.password, user.password )
+            .then( valid => {
+                if ( !valid ) {
+                    return res.status( 401 ).json( { message: 'identifiant(s) incorrect(s)' } );
+                }
+                res.status( 200 ).json( {
+                    userId: user.id,
+                    token: jwt.sign(
+                        { userId: user.id },
+                        'RANDOM_TOKEN_SECRET',
+                        { expiresIn: '48h' }
+                    )
+                } );
+            } )
+            .catch( error => res.status( 500 ).json( { error } ) );
+    }
+    catch ( error ) {
+        res.status( 500 ).json( { error } );
+    }
 };

@@ -24,6 +24,8 @@ exports.getOnePost = ( req, res ) => {
 exports.createPost = async ( req, res, next ) => {
     try {
         await Post.create( {
+            userId: req.body.userId,
+            from: req.body.from,
             title: req.body.title,
             content: req.body.content,
             image: req.body.image,
@@ -45,6 +47,8 @@ exports.modifyPost = async ( req, res ) => {
     try {
         await Post.findByPk( req.params.id ).then( ( post ) => {
             post.update( {
+                userId: req.auth.userId,
+                from: req.body.from,
                 title: req.body.title,
                 content: req.body.content,
                 image: req.body.image,
