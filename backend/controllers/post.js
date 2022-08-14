@@ -1,13 +1,30 @@
 const Post = require( '../models/post' );
 const fs = require( 'fs' );
+const User = require( '../models/user' );
 
 exports.getAllPosts = ( req, res ) => {
-    Post.findAll(
-        { limit: 10 }
-    )
+    const limit = parseInt( req.query.limit );
+    const offset = parseInt( req.query.offset );
+    //const fields = req.query.fields;
+
+    Post.findAll( {
+        //attributes: (fields !== '*' && fields != null ) ? fields.split(',') : null,
+        limit: ( !isNaN( limit ) ) ? limit : 10,
+        offset: ( !isNaN( offset ) ) ? offset : 10,
+        include: [ {
+            model: User,
+            attributes: [ 'email' ]
+        } ],
+    } )
         .then( ( posts ) => {
-            res.json( posts )
+            if ( posts ) {
+                res.status( 200 ).json( posts )
+            }
+            else {
+                res.status( 401 ).json( { message: 'No post found' } )
+            }
         } )
+        .catch( error => res.status( 400 ).json( { error } ) )
 };
 
 exports.getOnePost = ( req, res ) => {
@@ -37,7 +54,7 @@ exports.createPost = async ( req, res, next ) => {
             userId: req.auth.userId,
         } );
         res.status( 201 ).json( { message: 'post created' } );
-        console.log( 'success: post created', req.body );
+        console.log( 'success: post created' );
     }
     catch ( error ) {
         res.status( 400 ).json( { error } )
@@ -45,97 +62,41 @@ exports.createPost = async ( req, res, next ) => {
     }
 };
 
-/////// createPost before multer ////////////
-// exports.createPost = async ( req, res, next ) => {
-//     try {
-//         await Post.create( {
-//             userId: req.body.userId,
-//             from: req.body.from,
-//             title: req.body.title,
-//             content: req.body.content,
-//             image: req.body.image,
-//             likes: req.body.likes,
-//             dislikes: req.body.dislikes,
-//             usersLiked: [],
-//             usersDisliked: []
-//         } );
-//         res.status( 201 ).json( { message: 'post created' } );
-//         console.log( 'success: post created', req.body );
-//     }
-//     catch ( error ) {
-//         res.status( 400 ).json( { error } )
-//         console.log( 'error: post not created', res.statusCode );
-//     }
-// };
-
-exports.modifyPost = async ( req, res ) => {
-    // try {
-    const postObject = req.file ? {
-        ...JSON.parse( req.body.post ),
-        image: `${ req.protocol }://${ req.get( 'host' ) }/images/${ req.file.filename }`
-    } : { ...req.body };
-
-    delete postObject.userId;
-    await Post.findByPk( req.params.id )
-        .then( ( post ) => {
-            if ( post.userId != req.auth.userId ) {
-                res.status( 401 ).json( { message: 'Not authorized' } );
-            }
-            else {
-                post.update( {
-                    ...postObject,
-                    //userId: req.auth.userId,
-                    //id: req.params.id
-                } )
-                    .then( ( post ) => {
-                        // if ( post ) {
-                        res.status( 201 ).json( post )
-                        console.log( 'success: post updated', req.body )
-                        // } else {
-                        //     res.status( 404 ).json( { message: "Ce post n'existe pas" } )
-                        // }
+exports.modifyPost = async ( req, res, next ) => {
+    try {
+        const postObject = req.file ? {
+            ...JSON.parse( req.body.post ),
+            image: `${ req.protocol }://${ req.get( 'host' ) }/images/${ req.file.filename }`
+        } : { ...req.body };
+        delete postObject.userId;
+        await Post.findByPk( req.params.id )
+            .then( ( post ) => {
+                if ( post.userId != req.auth.userId ) {
+                    res.status( 401 ).json( { message: 'Not authorized' } );
+                }
+                else {
+                    post.update( {
+                        ...postObject,
+                        userId: req.auth.userId,
+                        //id: req.params.id
                     } )
-                    .catch( error => res.status( 401 ).json( { error } ) );
-            }
-        } );
-    // }
-    // catch ( error ) {
-    //     res.status( 400 ).json( { error } );
-    //     console.log( 'error: post not updated', res.statusCode )
-    // }
+                        .then( ( post ) => {
+                            if ( post ) {
+                                res.status( 201 ).json( post )
+                                console.log( 'success: post updated' )
+                            } else {
+                                res.status( 404 ).json( { message: "Ce post n'existe pas" } )
+                            }
+                        } )
+                        .catch( error => res.status( 401 ).json( { error } ) );
+                }
+            } );
+    }
+    catch ( error ) {
+        res.status( 400 ).json( { error } );
+        console.log( 'error: post not updated', res.statusCode )
+    }
 };
-
-////////////// modifyPost before multer ///////////////
-// exports.modifyPost = async ( req, res ) => {
-//     try {
-//         await Post.findByPk( req.params.id ).then( ( post ) => {
-//             post.update( {
-//                 userId: req.auth.userId,
-//                 from: req.body.from,
-//                 title: req.body.title,
-//                 content: req.body.content,
-//                 image: req.body.image,
-//                 likes: req.body.likes,
-//                 dislikes: req.body.dislikes,
-//                 usersLiked: [],
-//                 usersDisliked: []
-//             } )
-//                 .then( ( post ) => {
-//                     if ( post ) {
-//                         res.status( 201 ).json( post )
-//                         console.log( 'success: post updated', req.body )
-//                     } else {
-//                         res.status( 404 ).json( { message: "Ce post n'existe pas" } )
-//                     }
-//                 } )
-//         } );
-//     }
-//     catch ( error ) {
-//         res.status( 400 ).json( { error } );
-//         console.log( 'error: post not updated', res.statusCode )
-//     }
-// };
-
 
 exports.deletePost = ( req, res ) => {
     Post.findByPk( req.params.id )
@@ -156,18 +117,6 @@ exports.deletePost = ( req, res ) => {
         } )
         .catch( error => { res.status( 500 ).json( { error } ) } );
 };
-
-
-///////// deletePost before multer ////////
-// exports.deletePost = ( req, res ) => {
-//     Post.findByPk( req.params.id ).then( ( post ) => {
-//         post.destroy();
-//     } )
-//         .then( ( post ) => {
-//             res.sendStatus( 200 );
-//         } )
-//         .catch( error => res.status( 400 ).json( { error } ) )
-// };
 
 exports.likeStatusPost = ( req, res, next ) => {
     Post.findByPk( req.params.id )
@@ -202,9 +151,10 @@ exports.likeStatusPost = ( req, res, next ) => {
                     console.log( 'users disliked', sauce.usersDisliked );
                 }
             }
-            // post.save()
-            post.update( { likes: req.body.likes, dislikes: req.body.dislikes, usersLiked: [], usersDisliked: [] } )
-            //post.set( { likes: req.body.likes, dislikes: req.body.dislikes } )
+
+            post.set( { likes: req.body.likes, dislikes: req.body.dislikes } )
+            post.save()
+            //post.update( { likes: req.body.likes, dislikes: req.body.dislikes, usersLiked: [], usersDisliked: [] } )
             res.status( 200 ).json( { message: 'Sauce like status updated !' } )
         } )
         .catch( error => res.status( 400 ).json( { error } ) );

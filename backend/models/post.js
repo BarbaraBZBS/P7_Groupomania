@@ -1,10 +1,7 @@
 const sequelize = require( '../database/sequelize' );
 const DataTypes = require( 'sequelize' );
 
-module.exports = sequelize.define( "posts", {
-    userId: {
-        type: DataTypes.STRING, allowNull: false,
-    },
+module.exports = sequelize.define( "post", {
     from: {
         type: DataTypes.STRING, allowNull: false
     },
@@ -12,10 +9,7 @@ module.exports = sequelize.define( "posts", {
         type: DataTypes.TEXT( 'medium' ), allowNull: true, default: ""
     },
     content: {
-        type: DataTypes.TEXT( 'long' ), allowNull: false,
-        // validate: {
-        //     // isnot: [ "^[a-z0-9]+$", 'i' ] @*=
-        // }
+        type: DataTypes.TEXT( 'long' ), allowNull: false
     },
     image: {
         type: DataTypes.STRING, allowNull: true
