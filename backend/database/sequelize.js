@@ -1,8 +1,9 @@
+const sequelize = require( 'sequelize' );
 const Sequelize = require( 'sequelize' );
 
 module.exports = new Sequelize( {
     dialect: 'sqlite',
-    storage: './database.sqlite',
+    storage: './groupomania.sqlite',
     pool: {
         max: 5,
         min: 0,

@@ -2,6 +2,13 @@ const sequelize = require( '../database/sequelize' );
 const DataTypes = require( 'sequelize' );
 
 module.exports = sequelize.define( "user", {
+    username: {
+        type: DataTypes.STRING, allowNull: false, unique: true,
+        // references: {
+        //     model: 'post',
+        //     key: 'username'
+        // }
+    },
     email: {
         type: DataTypes.TEXT, allowNull: false, unique: true,
         validate: {
@@ -9,10 +16,7 @@ module.exports = sequelize.define( "user", {
         }
     },
     password: {
-        type: DataTypes.STRING( 60 ), allowNull: false
-    },
-    isAdmin: {
-        type: DataTypes.BOOLEAN, default: false, allowNull: false
+        type: DataTypes.STRING, allowNull: false
     }
 }, {
     timestamps: false,

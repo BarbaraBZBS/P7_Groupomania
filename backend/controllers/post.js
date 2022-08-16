@@ -1,6 +1,8 @@
 const Post = require( '../models/post' );
 const fs = require( 'fs' );
 const User = require( '../models/user' );
+const sequelize = require( '../database/sequelize' );
+const Like = require( '../models/like' );
 
 exports.getAllPosts = ( req, res ) => {
     const limit = parseInt( req.query.limit );
@@ -13,7 +15,7 @@ exports.getAllPosts = ( req, res ) => {
         offset: ( !isNaN( offset ) ) ? offset : 10,
         include: [ {
             model: User,
-            attributes: [ 'email' ]
+            attributes: [ 'username' ]
         } ],
     } )
         .then( ( posts ) => {
@@ -29,7 +31,13 @@ exports.getAllPosts = ( req, res ) => {
 
 exports.getOnePost = ( req, res ) => {
     let { id } = req.params;
-    Post.findByPk( id )
+    Post.findByPk( {
+        id,
+        include: [ {
+            model: User,
+            attributes: [ 'email' ]
+        } ]
+    } )
         .then( ( post ) => {
             if ( post ) {
                 res.status( 200 ).json( post )
@@ -118,45 +126,41 @@ exports.deletePost = ( req, res ) => {
         .catch( error => { res.status( 500 ).json( { error } ) } );
 };
 
-exports.likeStatusPost = ( req, res, next ) => {
-    Post.findByPk( req.params.id )
-        .then( post => {
-            if ( req.body.like == 1 ) {
-                if ( !post.usersLiked.includes( req.body.userId ) ) {
-                    post.likes++;
-                    post.usersLiked.push( req.body.userId );
-                    console.log( 'users liked', sauce.usersLiked );
-                    console.log( 'likes', sauce.likes );
-                }
-            }
-            else if ( req.body.like == 0 ) {
-                if ( post.usersLiked.includes( req.body.userId ) ) {
-                    post.likes--;
-                    post.usersLiked.splice( post.usersLiked.indexOf( req.body.userId ) );
-                }
-                else if ( post.usersDisliked.includes( req.body.userId ) ) {
-                    post.dislikes--;
-                    post.usersDisliked.splice( post.usersDisliked.indexOf( req.body.userId ) );
-                }
-                console.log( 'dislikes', sauce.dislikes );
-                console.log( 'users disliked', sauce.usersDisliked );
-                console.log( 'users liked', sauce.usersLiked );
-                console.log( 'likes', sauce.likes );
-            }
-            else if ( req.body.like == -1 ) {
-                if ( !post.usersDisliked.includes( req.body.userId ) ) {
-                    post.dislikes++;
-                    post.usersDisliked.push( req.body.userId );
-                    console.log( 'dislikes', sauce.dislikes );
-                    console.log( 'users disliked', sauce.usersDisliked );
-                }
-            }
+exports.likeStatusPost = async ( req, res ) => {
+    const userId = req.auth.userId;
+    const postId = parseInt( req.params.id );
 
-            post.set( { likes: req.body.likes, dislikes: req.body.dislikes } )
-            post.save()
-            //post.update( { likes: req.body.likes, dislikes: req.body.dislikes, usersLiked: [], usersDisliked: [] } )
-            res.status( 200 ).json( { message: 'Sauce like status updated !' } )
+    if ( postId <= 0 ) {
+        return res.status( 400 ).json( { message: 'invalid parameters' } )
+    }
+    Post.findOne( { where: { id: postId } } )
+    User.findOne( { where: { id: userId } } )
+    Like.findOne( { where: { postId: postId, userId: userId } } )
+        .then( async like => {
+            if ( like ) {
+                await Like.destroy( { where: { postId: postId, userId: userId } } )
+                    .then( () => {
+                        res.status( 200 ).json( { message: 'post unliked' } )
+                    } )
+                    .catch( error => {
+                        console.log( 'error : ', error )
+                        res.status( 500 ).json( { error } )
+                    } )
+            }
+            else {
+                await Like.create( {
+                    postId: postId,
+                    userId: userId
+                } )
+                    .then( like => {
+                        console.log( 'post liked' )
+                        res.status( 201 ).json( like )
+                    } )
+                    .catch( error => {
+                        res.status( 500 ).json( { error } )
+                    } )
+            }
         } )
-        .catch( error => res.status( 400 ).json( { error } ) );
-    console.log( 'post id', req.params.id );
-};
+    console.log( postId )
+    console.log( userId )
+}
