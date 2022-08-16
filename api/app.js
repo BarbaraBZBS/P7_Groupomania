@@ -1,6 +1,5 @@
 const express = require( 'express' );
 const app = express();
-const PORT = process.env.PORT || 3000;
 const userRoutes = require( './routes/user' );
 const postRoutes = require( './routes/post' );
 const adminRoutes = require( './routes/admin' );
@@ -10,6 +9,9 @@ const Role = require( './models/role' );
 const User_Roles = require( './models/user_roles' );
 const Like = require( './models/like' );
 const path = require( 'path' );
+// const dotenv = require( 'dotenv' );
+// dotenv.config();
+
 
 app.use( express.json() );
 app.use( express.urlencoded( { extended: true } ) );
@@ -112,4 +114,5 @@ Like.sync()
         console.log( `Database & likes table created!` );
     } );
 
-app.listen( PORT, () => console.log( `Server listening on port ${ PORT }!` ) );
+// app.listen( normalizePort( process.env.PORT ), () => console.log( `Server listening on port ${ process.env.PORT }!` ) );
+module.exports = app;

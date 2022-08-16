@@ -12,11 +12,11 @@ exports.getAllPosts = ( req, res ) => {
     Post.findAll( {
         //attributes: (fields !== '*' && fields != null ) ? fields.split(',') : null,
         limit: ( !isNaN( limit ) ) ? limit : 10,
-        offset: ( !isNaN( offset ) ) ? offset : 10,
-        include: [ {
+        offset: ( !isNaN( offset ) ) ? offset : null,
+        include: {
             model: User,
-            attributes: [ 'username' ]
-        } ],
+            attributes: [ 'username', 'email' ]
+        }
     } )
         .then( ( posts ) => {
             if ( posts ) {
@@ -31,12 +31,11 @@ exports.getAllPosts = ( req, res ) => {
 
 exports.getOnePost = ( req, res ) => {
     let { id } = req.params;
-    Post.findByPk( {
-        id,
-        include: [ {
+    Post.findByPk( id, {
+        include: {
             model: User,
-            attributes: [ 'email' ]
-        } ]
+            attributes: [ 'username', 'email' ]
+        }
     } )
         .then( ( post ) => {
             if ( post ) {
