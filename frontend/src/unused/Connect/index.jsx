@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Login from './Login'
+import Login from '../Login'
 import Signup from '../Signup'
 
 function Connect() {
@@ -17,16 +17,18 @@ function Connect() {
         }
     }
 
-    return <section className="connect-form">
-        <div className="connect-form_container">
-            <ul>
-                <li onClick={ handleProcess } id='login' className={ LoginProcess ? 'active-btn' : null }></li>
-                <li onClick={ handleProcess } id='signup' className={ SignupProcess ? 'active-btn' : null }></li>
-            </ul>
-            { LoginProcess && <Login /> }
-            { SignupProcess && <Signup /> }
-        </div>
-    </section>
+    return <>
+        {/* <div className="connect-form_container"> */ }
+        {/* <ul> */ }
+        {/* <li onClick={ handleProcess } id='login' 
+            className={ LoginProcess ? 'active-btn' : null }></li> */ }
+        {/* <li onClick={ handleProcess } id='signup' 
+            className={ SignupProcess ? 'active-btn' : null }></li> */ }
+        {/* </ul> */ }
+        { LoginProcess && <Login /> }
+        { SignupProcess && <Signup /> }
+        {/* </div> */ }
+    </>
 }
 
 export default Connect

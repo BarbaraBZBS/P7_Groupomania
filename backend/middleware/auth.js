@@ -18,8 +18,6 @@ module.exports = ( req, res, next ) => {
 };
 
 
-
-
 // verifyToken = ( req, res, next ) => {
 //     let token = req.headers[ "x-access-token" ];
 //     if ( !token ) {

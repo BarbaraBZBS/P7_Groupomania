@@ -30,16 +30,22 @@ exports.signup = ( req, res, next ) => {
         .then( hash => {
             User.create( { username: req.body.username, email: req.body.email, password: hash } )
                 .then( user => {
-                    if ( req.body.roles ) {
-                        Role.findAll( { where: { name: req.body.roles } } )
-                            .then( roles => {
-                                user.setRoles( roles ).then( () => {
+                    if ( req.body.role ) {
+                        user.update( {
+                            role: req.body.role
+                        } )
+                        Role.findAll( { where: { name: req.body.role } } )
+                            .then( role => {
+                                user.setRoles( role ).then( () => {
                                     res.send( { message: 'Utilisateur enregistré avec succès' } )
                                 } );
                             } );
                     }
                     else {
                         //user role 1
+                        user.update( {
+                            role: "user"
+                        } )
                         user.setRoles( [ 1 ] ).then( () => {
                             res.send( { message: 'Utilisateur enregistré avec succès' } )
                         } )
@@ -71,24 +77,48 @@ exports.login = async ( req, res, next ) => {
                 if ( !valid ) {
                     return res.status( 401 ).json( { message: 'identifiant(s) incorrect(s)' } );
                 }
+
+                const refreshToken = jwt.sign(
+                    { userId: user.id },
+                    process.env.REFRESH_TOKEN_SECRET,
+                    { expiresIn: '10s' }
+                );
+
+                const token = jwt.sign(
+                    { userId: user.id }, //, role: user.role
+                    //{ role: user.role },
+                    process.env.TOKEN_SECRET,
+                    { expiresIn: '24h' }
+                )
+                res.cookie( 'jwt', token, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 } )
+
                 res.status( 200 ).json( {
                     userId: user.id,
+                    role: user.role,
                     token: jwt.sign(
-                        { userId: user.id },
+                        { userId: user.id }, //, role: user.role
+                        //{ role: user.role },
                         process.env.TOKEN_SECRET,
-                        { expiresIn: '36h' }
-                    )
+                        { expiresIn: '24h' }
+                    ),
+                    // refreshToken: jwt.sign(
+                    //     { userId: user.id },
+                    //     process.env.REFRESH_TOKEN_SECRET,
+                    //     { expiresIn: '1d' }
+                    // )
                 } );
+                console.log( user.role )
+
                 const authorities = [];
                 user.getRoles().then( roles => {
                     for ( let i = 0; i < roles.length; i++ ) {
                         authorities.push( "ROLE_" + roles[ i ].name.toUpperCase() );
                         // res.status( 200 ).json( {
-                        // id: user.id,
-                        // username: user.username,
-                        // email: user.email,
-                        // roles: authorities,
-                        // //token: token
+                        //     id: user.id,
+                        //     username: user.username,
+                        //     email: user.email,
+                        //     roles: authorities,
+                        //     token: token
                         // } );
                     }
                     console.log( authorities )
@@ -99,4 +129,40 @@ exports.login = async ( req, res, next ) => {
     catch ( error ) {
         res.status( 500 ).json( { error } );
     }
+};
+
+exports.logout = async ( req, res ) => {
+    // On client, also delete the accessToken
+
+    const cookies = req.cookies;
+    if ( !cookies?.jwt ) return res.sendStatus( 204 ); //No content
+    const refreshToken = cookies.jwt;
+
+    // Is refreshToken in db?
+    const user = await User.findOne( { refreshToken } )
+    if ( !user ) {
+        res.clearCookie( 'jwt', { httpOnly: true, sameSite: 'None', secure: true } );
+        return res.sendStatus( 204 );
+    }
+
+    // Delete refreshToken in db
+    user.update( { refreshToken: '' } )
+    //user.refreshToken = '';
+    console.log( refreshToken );
+
+    res.clearCookie( 'jwt', { httpOnly: true, sameSite: 'None', secure: true } );
+    res.sendStatus( 204 );
+};
+
+exports.getAllUsers = ( req, res, next ) => {
+    User.findAll()
+        .then( ( users ) => {
+            if ( users ) {
+                res.status( 200 ).json( users )
+            }
+            else {
+                res.status( 401 ).json( { message: 'No users found' } )
+            }
+        } )
+        .catch( error => res.status( 400 ).json( { error } ) )
 };

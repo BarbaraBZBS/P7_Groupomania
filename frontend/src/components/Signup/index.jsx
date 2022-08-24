@@ -88,6 +88,8 @@ function Signup() {
         } catch ( err ) {
             if ( !err?.response ) {
                 setErrMsg( 'Pas de réponse du serveur' )
+            } else if ( err.response?.status === 409 ) {
+                setErrMsg( 'Nom/email déja utilisé(s)' )
             } else {
                 setErrMsg( 'Échec inscription' )
             }

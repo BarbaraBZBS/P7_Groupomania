@@ -6,9 +6,9 @@ const Unauthorized = () => {
     const goBack = () => navigate( -1 )
 
     return <section>
-        <h1>Unauthorized</h1>
+        <h1>Non autorisé</h1>
         <br />
-        <p>You do not have access to the requested page.</p>
+        <p>Vous n'êtes pas autorisé à accéder à cette page.</p>
         <div className="flexGrow">
             <button onClick={ goBack }>Go Back</button>
         </div>

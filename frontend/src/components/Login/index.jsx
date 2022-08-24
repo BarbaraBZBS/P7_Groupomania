@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import axios from '../../api/axios'
+//import AuthContext from '../../context/AuthProvider'
 import useAuth from '../../hooks/useAuth'
 import { Link } from 'react-router-dom'
 
@@ -7,13 +8,16 @@ const LOGIN_URL = '/api/auth/login'
 
 function Login() {
     const { setAuth } = useAuth()
+
+    //const navigate = useNavigate()
+    //const location = useLocation()
+    //const from = location.state?.from?.pathname || '/'
     const userRef = useRef()
     const errRef = useRef()
 
     const [ email, setEmail ] = useState( '' )
     const [ password, setPassword ] = useState( '' )
     const [ errMsg, setErrMsg ] = useState( '' )
-    const [ success, setSuccess ] = useState( false )
 
     useEffect( () => {
         userRef.current.focus()
@@ -37,15 +41,21 @@ function Login() {
                     withCredentials: true
                 }
             )
-            console.log( response?.data )
-            console.log( response )
+            console.log( JSON.stringify( response?.data ) )
+            //console.log( response )
             const token = response?.data?.token
-            //const roles = response?.data?.roles
-            setAuth( { email, password, token } )
-            console.log( token )
+            const role = response?.data?.role
+            setAuth( { email, password, role, token } )
+            console.log( response.data.user )
+            localStorage.setItem( 'user', JSON.stringify( [ response.data.userId, response.data.role, response.data.token ] ) )
             setEmail( '' )
             setPassword( '' )
-            setSuccess( true )
+            if ( role === 'user' ) {
+                window.location = 'home'
+            } else if ( role === 'admin' ) {
+                window.location = '/admin'
+            }
+
         } catch ( err ) {
             if ( !err?.response ) {
                 console.log( err )
@@ -57,58 +67,46 @@ function Login() {
             } else {
                 setErrMsg( 'La connection au compte a échoué' )
                 console.log( err.response )
-
             }
             errRef.current.focus()
         }
     }
 
-    return <>
-        { success ? (
-            <section>
-                <h1> Vous êtes authentifié ! </h1> <br />
-                <p>
-                    <Link to="/home"> Accueil </Link>
-                </p>
-            </section>
-        ) : (
-            <section className="login">
-                <p ref={ errRef } className={ errMsg ? 'errMsg' : 'offscreen' }
-                    aria-live='assertive'>{ errMsg }</p>
-                <h1> Connexion </h1>
-                <form onSubmit={ handleSubmit }>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="text"
-                        id='email'
-                        ref={ userRef }
-                        autoComplete='off'
-                        onChange={ ( e ) => setEmail( e.target.value ) }
-                        value={ email }
-                        required
-                    />
+    return <section className="login">
+        <p ref={ errRef } className={ errMsg ? 'errMsg' : 'offscreen' }
+            aria-live='assertive'>{ errMsg }</p>
+        <h1> Connexion </h1>
+        <form onSubmit={ handleSubmit }>
+            <label htmlFor="email">Email</label>
+            <input
+                type="text"
+                id='email'
+                ref={ userRef }
+                autoComplete='off'
+                onChange={ ( e ) => setEmail( e.target.value ) }
+                value={ email }
+                required
+            />
 
-                    <label htmlFor="password">Mot de passe</label>
-                    <input
-                        type="password"
-                        id='password'
-                        onChange={ ( e ) => setPassword( e.target.value ) }
-                        value={ password }
-                        required
-                    />
-                    <br />
-                    <button>Se Connecter</button>
-                </form>
-                <br />
-                <p>
-                    Besoin d'un compte ? <br />
-                    <span>
-                        <Link to="/signup">S'inscrire</Link>
-                    </span>
-                </p>
-            </section>
-        ) }
-    </>
+            <label htmlFor="password">Mot de passe</label>
+            <input
+                type="password"
+                id='password'
+                onChange={ ( e ) => setPassword( e.target.value ) }
+                value={ password }
+                required
+            />
+            <br />
+            <button>Se Connecter</button>
+        </form>
+        <br />
+        <p>
+            Besoin d'un compte ? <br />
+            <span>
+                <Link to="/signup">S'inscrire</Link>
+            </span>
+        </p>
+    </section>
 }
 
 export default Login

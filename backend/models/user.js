@@ -17,7 +17,12 @@ module.exports = sequelize.define( "user", {
     },
     password: {
         type: DataTypes.STRING, allowNull: false
+    },
+    role: {
+        type: DataTypes.STRING, default: "user"
     }
 }, {
     timestamps: false,
 } );
+
+
