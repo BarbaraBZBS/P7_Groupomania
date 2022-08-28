@@ -1,17 +1,9 @@
 import { useRef, useState, useEffect } from 'react'
 import axios from '../../api/axios'
-//import AuthContext from '../../context/AuthProvider'
-import useAuth from '../../hooks/useAuth'
-import { Link } from 'react-router-dom'
 
 const LOGIN_URL = '/api/auth/login'
 
 function Login() {
-    const { setAuth } = useAuth()
-
-    //const navigate = useNavigate()
-    //const location = useLocation()
-    //const from = location.state?.from?.pathname || '/'
     const userRef = useRef()
     const errRef = useRef()
 
@@ -34,28 +26,21 @@ function Login() {
             const response = await axios.post( LOGIN_URL,
                 JSON.stringify( { email, password } ),
                 {
-                    headers:
-                    {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
             )
             console.log( JSON.stringify( response?.data ) )
-            //console.log( response )
-            const token = response?.data?.token
+            // const token = response?.data?.token
             const role = response?.data?.role
-            setAuth( { email, password, role, token } )
-            console.log( response.data.user )
-            localStorage.setItem( 'user', JSON.stringify( [ response.data.userId, response.data.role, response.data.token ] ) )
+            //( [ response.data.userId, response.data.role, response.data.token ] ) )
             setEmail( '' )
             setPassword( '' )
             if ( role === 'user' ) {
-                window.location = 'home'
+                window.location = '/'
             } else if ( role === 'admin' ) {
                 window.location = '/admin'
             }
-
         } catch ( err ) {
             if ( !err?.response ) {
                 console.log( err )
@@ -99,13 +84,6 @@ function Login() {
             <br />
             <button>Se Connecter</button>
         </form>
-        <br />
-        <p>
-            Besoin d'un compte ? <br />
-            <span>
-                <Link to="/signup">S'inscrire</Link>
-            </span>
-        </p>
     </section>
 }
 

@@ -1,11 +1,11 @@
 module.exports.corsOptions = {
     origin: process.env.CLIENT_URL,
     credentials: true,
-    allowedHeaders: [ "Content-Type", "Origin", "X - Requested - With", "Content", " Accept", "Authorization" ],
-    //allowedHeaders: [ "sessionId", "Content-Type" ],
-    //exposedHeaders: [ "sessionId" ],
-    methods: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-    //preflightContinue: false,
+    //allowedHeaders: [ "sessionId", "Content-Type", "Origin", "X - Requested - With", "Content", " Accept", "Authorization" ],
+    allowedHeaders: [ "sessionId", "Content-Type" ],
+    exposedHeaders: [ "sessionId" ],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
 };
 
 //app.use( ( req, res, next ) => {

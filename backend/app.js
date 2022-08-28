@@ -9,36 +9,46 @@ const Role = require( './models/role' );
 const User_Roles = require( './models/user_roles' );
 const Like = require( './models/like' );
 const path = require( 'path' );
-//const cors = require( 'cors' );
+const cors = require( 'cors' );
 //const corsOptions = require( './config/corsOptions' );
 const errorHandler = require( './middleware/errorHandler' );
 const cookieParser = require( 'cookie-parser' );
 const requireAuth = require( './middleware/requireAuth' );
+const checkUser = require( './middleware/checkUser' );
 const app = express();
 
-app.use( ( req, res, next ) => {
-    res.setHeader( "Access-Control-Allow-Origin", `${ process.env.CLIENT_URL }` );
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-    );
-    res.setHeader( "Access-Control-Allow-Credentials", "true" );
-    next();
-} );
+// app.use( ( req, res, next ) => {
+//     // res.setHeader( "Access-Control-Allow-Origin", `${ process.env.CLIENT_URL }` );
+//     // res.setHeader(
+//     //     "Access-Control-Allow-Headers",
+//     //     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+//     // );
+//     // res.setHeader(
+//     //     "Access-Control-Allow-Methods",
+//     //     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+//     // );
+//     res.setHeader( "Access-Control-Allow-Credentials", "true" );
+//     next();
+// } );
 
-//app.use( cors( corsOptions ) );
+const corsOptions = {
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    allowedHeaders: [ "sessionId", "Content-Type" ],
+    exposedHeaders: [ "sessionId" ],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+};
+app.use( cors( corsOptions ) );
 
 app.use( express.urlencoded( { extended: true } ) );
 app.use( express.json() );
 
 app.use( cookieParser() );
 
+app.get( '*', checkUser );
 app.get( '/jwtid', requireAuth, ( req, res ) => {
-    res.status( 200 ).send( res.locals.user.id )
+    res.status( 200 ).json( res.locals.user.id )
 } );
 
 app.use( '/images', express.static( path.join( __dirname, 'images' ) ) );

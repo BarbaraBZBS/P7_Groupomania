@@ -1,25 +1,23 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { AuthProvider } from './context/AuthProvider'
 import App from './App'
 import './index.css'
-//import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux'
+// dep: createstore, redux, redux-devtools-extension
+import { legacy_createStore as createStore, applyMiddleware } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
+import rootReducer from './reducers'
+// dev-tools  - must b removed for dev: redux-devtools-extension, logger
+import logger from 'redux-logger'
+
+const store = createStore(
+    rootReducer, composeWithDevTools( applyMiddleware( thunk, logger ) )
+)
 
 const root = ReactDOM.createRoot( document.getElementById( 'root' ) )
 root.render(
-    <React.StrictMode>
-        <BrowserRouter>
-            <AuthProvider>
-                <Routes>
-                    <Route path='/*' element={ <App /> } />
-                </Routes>
-            </AuthProvider>
-        </BrowserRouter>
-    </React.StrictMode>
+    <Provider store={ store }>
+        < App />
+    </Provider>
 )
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-//reportWebVitals();

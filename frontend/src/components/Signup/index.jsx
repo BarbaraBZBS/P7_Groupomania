@@ -1,11 +1,11 @@
 import { useRef, useState, useEffect } from 'react'
-import { faCheck, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTimes, faInfoCircle, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from '../../api/axios'
-import { Link } from 'react-router-dom'
+import Login from '../Login'
 
 // eslint-disable-next-line max-len
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ // eslint-disable-line
 const PASSWORD_REGEX = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,15})$/
 const USER_REGEX = /^[a-zA-Z-_]{5,10}$/
 const REGISTER_URL = '/api/auth/signup'
@@ -99,13 +99,15 @@ function Signup() {
 
     return <>
         { success ? (
-            <section>
-                <h1>Success!</h1>
-                <p>
-                    <Link to="/">Se connecter</Link>
-
-                </p>
-            </section>
+            <>
+                <h4 className='success'>
+                    <FontAwesomeIcon icon={ faThumbsUp } />
+                    &nbsp; Inscription validée ! Vous pouvez vous connecter.
+                </h4>
+                <span></span>
+                <br />
+                <Login />
+            </>
         ) : (
             <section>
                 <p ref={ errRef } className={ errMsg ? 'errmsg' : 'offscreen' } aria-live="assertive">{ errMsg }</p>
@@ -179,15 +181,8 @@ function Signup() {
                     </p>
                     <br />
                     <button disabled={ !validName || !validPwd ? true : false }>
-                        S'inscrire</button>
+                        Valider</button>
                 </form>
-                <br />
-                <p>
-                    Déjà inscrit ? <br />
-                    <span className="line">
-                        <Link to="/login"> Se connecter </Link>
-                    </span>
-                </p>
             </section>
         ) }
     </>

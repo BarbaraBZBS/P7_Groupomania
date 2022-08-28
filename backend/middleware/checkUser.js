@@ -1,22 +1,22 @@
 const jwt = require( 'jsonwebtoken' );
-const dotenv = require( 'dotenv' );
-dotenv.config();
 const User = require( '../models/user' );
-
 
 module.exports = ( req, res, next ) => {
     const token = req.cookies.jwt;
     if ( token ) {
         jwt.verify( token, process.env.TOKEN_SECRET, async ( err, decodedToken ) => {
             if ( err ) {
-                console.log( err )
-                res.status( 400 ).json( { message: 'No token' } )
+                res.locals.user = null;
+                next();
             } else {
-                //console.log( 'decoded id:', decodedToken.userId );
+                let user = await User.findOne( { where: { id: decodedToken.userId } } );
+                //console.log( 'user id?:', user.id );
+                res.locals.user = user;
                 next();
             }
-        } )
+        } );
     } else {
-        console.log( 'no token' )
+        res.locals.user = null;
+        next();
     }
 };

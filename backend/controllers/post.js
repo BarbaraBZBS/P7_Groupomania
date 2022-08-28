@@ -79,7 +79,7 @@ exports.modifyPost = async ( req, res, next ) => {
         await Post.findByPk( req.params.id )
             .then( ( post ) => {
                 if ( post.userId != req.auth.userId ) {
-                    res.status( 401 ).json( { message: 'Not authorized' } );
+                    res.status( 401 ).json( { message: 'Unauthorized' } );
                 }
                 else {
                     post.update( {
@@ -92,7 +92,7 @@ exports.modifyPost = async ( req, res, next ) => {
                                 res.status( 201 ).json( post )
                                 console.log( 'success: post updated' )
                             } else {
-                                res.status( 404 ).json( { message: "Ce post n'existe pas" } )
+                                res.status( 404 ).json( { message: 'Post not found' } )
                             }
                         } )
                         .catch( error => res.status( 401 ).json( { error } ) );
@@ -109,14 +109,14 @@ exports.deletePost = ( req, res ) => {
     Post.findByPk( req.params.id )
         .then( ( post ) => {
             if ( post.userId != req.auth.userId ) {
-                res.status( 401 ).json( { message: 'Not authorized' } );
+                res.status( 401 ).json( { message: 'Unauthorized' } );
             }
             else {
                 const filename = post.image.split( '/images/' )[ 1 ];
                 fs.unlink( `images/${ filename }`, () => {
                     post.destroy()
                         .then( () => {
-                            res.status( 200 ).json( { message: 'Post supprimé !' } );
+                            res.status( 200 ).json( { message: 'Post deleted !' } );
                         } )
                         .catch( error => res.status( 401 ).json( { error } ) );
                 } );
@@ -139,7 +139,7 @@ exports.likeStatusPost = async ( req, res ) => {
             if ( like ) {
                 await Like.destroy( { where: { postId: postId, userId: userId } } )
                     .then( () => {
-                        res.status( 200 ).json( { message: 'post unliked' } )
+                        res.status( 200 ).json( { message: 'post unliked !' } )
                     } )
                     .catch( error => {
                         console.log( 'error : ', error )
@@ -152,7 +152,7 @@ exports.likeStatusPost = async ( req, res ) => {
                     userId: userId
                 } )
                     .then( like => {
-                        console.log( 'post liked' )
+                        console.log( 'post liked !' )
                         res.status( 201 ).json( like )
                     } )
                     .catch( error => {

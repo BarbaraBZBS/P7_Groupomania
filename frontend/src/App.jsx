@@ -1,51 +1,38 @@
-import Error from './components/Error'
-//import Layout from './components/Layout'
-import Login from './components/Login'
-import Signup from './components/Signup'
-import Home from './pages/Home'
-import Admin from './components/Admin'
-//import RequireAuth from './components/RequireAuth'
-import { Routes, Route } from 'react-router-dom'
-
-// import Welcome from './components/Welcome'
-//import Unauthorized from './components/Unauthorized'
-//import PersistLogin from './components/PersistLogin'
-//import LinkPage from './components/Linkpage'
+import { useState, useEffect } from 'react'
+import axios from './api/axios'
+import { UidContext } from './context/AppContext'
+import Router from './components/Routes'
+import { useDispatch } from 'react-redux'
+import { getUser } from './actions/userActions'
 //const ROLES = `${ process.env.ROLES }`
 
 
 function App() {
+    const [ uid, setUid ] = useState( null )
+    const dispatch = useDispatch()
 
-    return <Routes>
-        {/* <Route path="/" element={ <Layout /> }> */ }
+    useEffect( () => {
+        const fetchToken = async () => {
+            try {
+                await axios.get( '/jwtid',
+                    { withCredentials: true }
+                )
+                    .then( ( res ) => {
+                        setUid( res.data )
+                        console.log( res )
+                        console.log( 'uid? : ', uid )
+                    } )
+            } catch ( err ) {
+                console.log( 'No token' )
+            }
+        }
+        fetchToken()
+        if ( uid ) dispatch( getUser( uid ) )
+    }, [ uid ] )
 
-        {/* public routes */ }
-        {/* <Route path="/" element={ <Connect /> } /> */ }
-        <Route path="/" element={ <Login /> } />
-        <Route path="signup" element={ <Signup /> } />
-
-        {/* <Route path="linkpage" element={ <LinkPage /> } /> */ }
-        {/* <Route path="unauthorized" element={ <Unauthorized /> } /> */ }
-
-        {/* protected routes */ }
-        {/* <Route element={ <PersistLogin /> }> */ }
-        {/* <Route element={ <RequireAuth
-                allowedRoles={ [ ROLES.Admin ] } /> }> {/* */ }
-
-        <Route path="home" element={ <Home /> } />
-        <Route path="admin" element={ <Admin /> } />
-
-        {/* </Route> */ }
-
-        {/* <Route element={ <RequireAuth 
-                allowedRoles={ [ ROLES.Admin ] } /> }> {/**/ }
-        {/* </Route> */ }
-        {/* </Route> */ }
-        {/* catch all */ }
-        <Route path="*" element={ <Error /> } />
-        {/* </Route> */ }
-    </Routes>
-    // </UidContext.Provider >
+    return <UidContext.Provider value={ uid }>
+        <Router />
+    </UidContext.Provider>
 }
 
 export default App

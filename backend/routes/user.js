@@ -12,6 +12,12 @@ router.post( '/login', userCtrl.login );
 
 router.get( '/logout', userCtrl.logout );
 
-router.get( '/users', verifyRoles( ROLES_LIST.Admin ), userCtrl.getAllUsers );
+//router.get( '/users', verifyRoles( ROLES_LIST.Admin ), userCtrl.getAllUsers );
+
+router.get( '/user/:id', userCtrl.getOneUser );
+
+router.put( '/user/:id', userCtrl.updateUser );
+
+router.delete( '/user/:id', userCtrl.deleteUser );
 
 module.exports = router;
