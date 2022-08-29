@@ -14,6 +14,4 @@ module.exports = sequelize.define( "post", {
     likes: {
         type: DataTypes.INTEGER, defaultValue: 0
     }
-}, {
-    timestamps: false
 } );

@@ -1,18 +1,22 @@
 import LeftNav from '../../components/LeftNav'
 import { useContext } from 'react'
-import { useLocation, Navigate } from 'react-router-dom'
+//import { useLocation, Navigate } from 'react-router-dom'
 import { UidContext } from '../../context/AppContext'
 import Thread from '../../components/Thread'
+import Log from '../../components/Log'
 
 function Home() {
     const uid = useContext( UidContext )
-    const location = useLocation()
+    //const location = useLocation()
 
     return <section className="Home">
-        <LeftNav />
-        <div className='main'>
+        { uid ? ( <>
+            <LeftNav />
             <Thread />
-        </div>
+        </>
+        ) : (
+            <Log login={ true } signup={ false } />
+        ) }
     </section >
 }
 

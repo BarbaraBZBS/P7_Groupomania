@@ -6,7 +6,7 @@ import UpdateProfil from '../../components/UpdateProfil'
 const Profil = () => {
     const uid = useContext( UidContext )
 
-    return <main className='profil-page'>
+    return <section className='profil-page'>
         { uid ? (
             <UpdateProfil />
         ) : (
@@ -14,7 +14,7 @@ const Profil = () => {
                 <Log login={ false } signup={ true } />
             </div>
         ) }
-    </main>
+    </section>
 }
 
 export default Profil

@@ -21,7 +21,7 @@ function Logout() {
                     removeCookie( 'jwt' )
                     console.log( response )
 
-                    window.location = '/profil'
+                    window.location = '/'
                 } )
                 .catch( error => console.log( error ) )
         } catch ( err ) {

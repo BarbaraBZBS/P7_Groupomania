@@ -6,13 +6,13 @@ const postCtrl = require( '../controllers/post' );
 
 router.get( '/', postCtrl.getAllPosts );
 
-router.get( '/:id', auth, postCtrl.getOnePost );
+router.get( '/:id', postCtrl.getOnePost );
 
 router.post( '/', auth, multer, postCtrl.createPost );
 
-router.put( '/:id', auth, multer, postCtrl.modifyPost );
+router.put( '/:id', multer, postCtrl.modifyPost );
 
-router.delete( '/:id', auth, postCtrl.deletePost );
+router.delete( '/:id', postCtrl.deletePost );
 
 router.post( '/:id/like', auth, postCtrl.likeStatusPost );
 

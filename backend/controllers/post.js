@@ -5,14 +5,14 @@ const sequelize = require( '../database/sequelize' );
 const Like = require( '../models/like' );
 
 exports.getAllPosts = ( req, res ) => {
-    const limit = parseInt( req.query.limit );
-    const offset = parseInt( req.query.offset );
-    //const fields = req.query.fields;
+    // const limit = parseInt( req.query.limit );
+    // const offset = parseInt( req.query.offset );
+    // //const fields = req.query.fields;
 
     Post.findAll( {
         //attributes: (fields !== '*' && fields != null ) ? fields.split(',') : null,
-        limit: ( !isNaN( limit ) ) ? limit : 10,
-        offset: ( !isNaN( offset ) ) ? offset : null,
+        // limit: ( !isNaN( limit ) ) ? limit : 10,
+        // offset: ( !isNaN( offset ) ) ? offset : null,
         include: {
             model: User,
             attributes: [ 'username', 'email' ]
@@ -75,28 +75,28 @@ exports.modifyPost = async ( req, res, next ) => {
             ...JSON.parse( req.body.post ),
             image: `${ req.protocol }://${ req.get( 'host' ) }/images/${ req.file.filename }`
         } : { ...req.body };
-        delete postObject.userId;
+        //delete postObject.userId;
         await Post.findByPk( req.params.id )
             .then( ( post ) => {
-                if ( post.userId != req.auth.userId ) {
-                    res.status( 401 ).json( { message: 'Unauthorized' } );
-                }
-                else {
-                    post.update( {
-                        ...postObject,
-                        userId: req.auth.userId,
-                        //id: req.params.id
+                // if ( post.userId != req.auth.userId ) {
+                //     res.status( 401 ).json( { message: 'Unauthorized' } );
+                // }
+                // else {
+                post.update( {
+                    ...postObject,
+                    //userId: req.auth.userId,
+                    //id: req.params.id
+                } )
+                    .then( ( post ) => {
+                        if ( post ) {
+                            res.status( 201 ).json( post )
+                            console.log( 'success: post updated' )
+                        } else {
+                            res.status( 404 ).json( { message: 'Post not found' } )
+                        }
                     } )
-                        .then( ( post ) => {
-                            if ( post ) {
-                                res.status( 201 ).json( post )
-                                console.log( 'success: post updated' )
-                            } else {
-                                res.status( 404 ).json( { message: 'Post not found' } )
-                            }
-                        } )
-                        .catch( error => res.status( 401 ).json( { error } ) );
-                }
+                    .catch( error => res.status( 401 ).json( { error } ) );
+                // }
             } );
     }
     catch ( error ) {
@@ -108,22 +108,26 @@ exports.modifyPost = async ( req, res, next ) => {
 exports.deletePost = ( req, res ) => {
     Post.findByPk( req.params.id )
         .then( ( post ) => {
-            if ( post.userId != req.auth.userId ) {
-                res.status( 401 ).json( { message: 'Unauthorized' } );
-            }
-            else {
+            if ( post.image ) {
                 const filename = post.image.split( '/images/' )[ 1 ];
                 fs.unlink( `images/${ filename }`, () => {
                     post.destroy()
                         .then( () => {
                             res.status( 200 ).json( { message: 'Post deleted !' } );
                         } )
-                        .catch( error => res.status( 401 ).json( { error } ) );
+                        .catch( error => res.status( 400 ).json( { error } ) );
                 } );
+            }
+            else {
+                post.destroy()
+                    .then( () => {
+                        res.status( 200 ).json( { message: 'Post deleted !' } );
+                    } )
+                    .catch( error => res.status( 400 ).json( { error } ) );
             }
         } )
         .catch( error => { res.status( 500 ).json( { error } ) } );
-};
+}
 
 exports.likeStatusPost = async ( req, res ) => {
     const userId = req.auth.userId;
