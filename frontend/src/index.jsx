@@ -10,10 +10,13 @@ import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 // dev-tools  - must b removed for dev: redux-devtools-extension, logger
 import logger from 'redux-logger'
+import { getUsers } from './actions/usersActions'
 
 const store = createStore(
     rootReducer, composeWithDevTools( applyMiddleware( thunk, logger ) )
 )
+
+store.dispatch( getUsers() )
 
 const root = ReactDOM.createRoot( document.getElementById( 'root' ) )
 root.render(

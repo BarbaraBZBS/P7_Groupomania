@@ -139,6 +139,11 @@ exports.likeStatusPost = async ( req, res ) => {
             if ( like ) {
                 await Like.destroy( { where: { postId: postId, userId: userId } } )
                     .then( () => {
+                        Post.findOne( { where: { id: postId } } )
+                            .then( ( post ) => {
+                                post.update( { likes: sequelize.literal( 'likes - 1' ) } )
+                            } )
+                            .catch( error => res.status( 400 ).json( error ) )
                         res.status( 200 ).json( { message: 'post unliked !' } )
                     } )
                     .catch( error => {
@@ -151,9 +156,13 @@ exports.likeStatusPost = async ( req, res ) => {
                     postId: postId,
                     userId: userId
                 } )
-                    .then( like => {
-                        console.log( 'post liked !' )
-                        res.status( 201 ).json( like )
+                    .then( () => {
+                        Post.findOne( { where: { id: postId } } )
+                            .then( ( post ) => {
+                                post.update( { likes: sequelize.literal( 'likes + 1' ) } )
+                            } )
+                            .catch( error => res.status( 400 ).json( { error } ) )
+                        res.status( 201 ).json( { message: 'post liked !' } )
                     } )
                     .catch( error => {
                         res.status( 404 ).json( { error } )

@@ -12,7 +12,7 @@ function App() {
     const dispatch = useDispatch()
 
     useEffect( () => {
-        const fetchToken = async () => {
+        const fetchTokenId = async () => {
             try {
                 await axios.get( '/jwtid',
                     { withCredentials: true }
@@ -26,9 +26,9 @@ function App() {
                 console.log( 'No token' )
             }
         }
-        fetchToken()
+        fetchTokenId()
         if ( uid ) dispatch( getUser( uid ) )
-    }, [ uid ] )
+    }, [ uid, dispatch ] )
 
     return <UidContext.Provider value={ uid }>
         <Router />

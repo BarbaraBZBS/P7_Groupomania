@@ -32,9 +32,9 @@ const UpdateProfil = () => {
                     axios.get( '/api/auth/logout',
                         { withCredentials: true }
                     )
-                        .then( ( response ) => {
+                        .then( ( res ) => {
                             removeCookie( 'jwt' )
-                            //console.log( response )
+                            //console.log( res )
                             window.location = '/profil'
                         } )
                         .catch( error => console.log( error ) )

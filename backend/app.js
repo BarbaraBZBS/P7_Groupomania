@@ -15,6 +15,7 @@ const errorHandler = require( './middleware/errorHandler' );
 const cookieParser = require( 'cookie-parser' );
 const requireAuth = require( './middleware/requireAuth' );
 const checkUser = require( './middleware/checkUser' );
+const { isNullOrUndefined } = require( 'util' );
 const app = express();
 
 // app.use( ( req, res, next ) => {
@@ -102,14 +103,12 @@ Post.sync()
         console.log( `Database & posts table created!` );
     } );
 
-Role.sync()
+Role.sync( { force: true } )
     .then( () => {
-        if ( Role.id === null ) {
-            initial();
-        }
+        initial();
         console.log( `Database & roles table created!` );
     } )
-    .catch( error => res.json( error ) )
+    .catch( error => console.log( error ) )
 
 function initial() {
     Role.create( {

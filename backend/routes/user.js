@@ -12,7 +12,7 @@ router.post( '/login', userCtrl.login );
 
 router.get( '/logout', userCtrl.logout );
 
-//router.get( '/users', verifyRoles( ROLES_LIST.Admin ), userCtrl.getAllUsers );
+router.get( '/users', userCtrl.getAllUsers ); //, verifyRoles( ROLES_LIST.Admin )
 
 router.get( '/user/:id', userCtrl.getOneUser );
 

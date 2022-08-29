@@ -12,7 +12,7 @@ module.exports = ( req, res, next ) => {
                 console.log( err )
                 res.status( 400 ).json( { message: 'No token' } )
             } else {
-                //console.log( 'decoded id:', decodedToken.userId );
+                console.log( 'decoded id:', decodedToken.userId );
                 next();
             }
         } )
