@@ -1,6 +1,7 @@
 import axios from '../api/axios'
 
 export const GET_POSTS = 'GET_POSTS'
+export const ADD_POST = 'ADD_POST'
 export const UPDATE_POST_TITLE = 'UPDATE_POST_TITLE'
 export const UPDATE_POST_CONTENT = 'UPDATE_POST_CONTENT'
 export const DELETE_POST = 'DELETE_POST'
@@ -16,6 +17,19 @@ export const getPosts = ( num ) => {
             .catch( ( error ) => console.log( error ) )
     }
 }
+
+export const addPost = ( data ) => {
+    return ( dispatch ) => {
+        return axios
+            .post( '/api/posts', ( data ) )
+    }
+}
+// export const addPost = ( data ) => {
+//     return ( dispatch ) => {
+//         return axios
+//             .post( '/api/posts', ( data ) )
+//     }
+// }
 
 export const updatePostTitle = ( postId, title ) => {
     return ( dispatch ) => {

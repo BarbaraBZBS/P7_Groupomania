@@ -102,8 +102,6 @@ const Card = ( { post } ) => {
                                 </div>
                             </div>
                         ) }
-
-
                         <div className='post-img'>
                             { post.image && <img src={ post.image } alt='post' className='card-img' /> }
                         </div>

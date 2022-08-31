@@ -15,7 +15,6 @@ const errorHandler = require( './middleware/errorHandler' );
 const cookieParser = require( 'cookie-parser' );
 const requireAuth = require( './middleware/requireAuth' );
 const checkUser = require( './middleware/checkUser' );
-const { isNullOrUndefined } = require( 'util' );
 const app = express();
 
 // app.use( ( req, res, next ) => {

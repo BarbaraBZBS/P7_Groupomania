@@ -4,15 +4,20 @@ import { useContext } from 'react'
 import { UidContext } from '../../context/AppContext'
 import Thread from '../../components/Thread'
 import Log from '../../components/Log'
+import CreatePostForm from '../../components/Post/CreatePostForm'
 
 function Home() {
     const uid = useContext( UidContext )
-    //const location = useLocation()
 
     return <section className="Home">
         { uid ? ( <>
             <LeftNav />
-            <Thread />
+            <div className='main'>
+                <div className='home-header'>
+                    <CreatePostForm />
+                </div>
+                <Thread />
+            </div>
         </>
         ) : (
             <Log login={ true } signup={ false } />

@@ -54,11 +54,12 @@ exports.createPost = async ( req, res, next ) => {
             image: `${ req.protocol }://${ req.get( 'host' ) }/images/${ req.file.filename }`
         } : { ...req.body };
         // delete postObject.id;
-        delete postObject.userId;
+        //delete postObject.userId;
 
         await Post.create( {
             ...postObject,
-            userId: req.auth.userId,
+            userId: req.body.userId
+            //userId: req.auth.userId,
         } );
         res.status( 201 ).json( { message: 'post created' } );
         console.log( 'success: post created' );

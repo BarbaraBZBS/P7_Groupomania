@@ -6,7 +6,8 @@
     box-sizing: border-box;
 }
 
-ul {
+ul,
+li {
     list-style: none;
 }
 
@@ -196,6 +197,16 @@ button {
     border: 2px solid orange;
     border-radius: 15px;
 }
+
+/* .file-icon {
+    position: relative;
+}
+
+#img-upload {
+    opacity: 0;
+    position: absolute;
+    left: 20px;
+} */
 
 .spinner {
     animation: spin infinite 1.3s linear;

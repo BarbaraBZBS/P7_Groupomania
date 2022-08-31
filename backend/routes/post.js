@@ -8,7 +8,7 @@ router.get( '/', postCtrl.getAllPosts );
 
 router.get( '/:id', postCtrl.getOnePost );
 
-router.post( '/', auth, multer, postCtrl.createPost );
+router.post( '/', multer, postCtrl.createPost );
 
 router.put( '/:id', multer, postCtrl.modifyPost );
 
