@@ -180,7 +180,7 @@ function Signup() {
                         au moins un nombre et une lettre
                     </p>
                     <br />
-                    <button disabled={ !validName || !validPwd ? true : false }>
+                    <button classname='bg-indigo-900 active:bg-appstone hover: bg-blue-900' disabled={ !validName || !validPwd ? true : false }>
                         Valider</button>
                 </form>
             </section>

@@ -1,92 +1,68 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,400;0,700;0,900;1,100&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+@layer components {
+    .btn {
+        @apply w-32 p-2 border-2 border-white bg-indigo-500 text-appblck rounded-xl active:bg-appstone mt-4
+    }
+    .btn-hover {
+        @apply hover:bg-indigo-800 hover:text-white
+    }
+    .btn-active {
+        @apply w-32 p-2 border-2 border-appstone bg-appstone  text-white rounded-xl
+    }
+    .li {
+        @apply list-none
+    }
+    .app {
+        @apply flex justify-center items-center min-h-screen py-4 px-2
+    }
+    .label {
+        @apply mt-4
+    }
 }
 
-ul,
+
+/* ul,
 li {
     list-style: none;
 }
-
 button:hover {
     background: rgba(76, 76, 76, 0.4);
 }
-
 .active-btn {
     background-color: rgba(150, 99, 99, 0.4);
 }
 
-html {
-    font-family: 'Nunito', sans-serif;
-    font-size: 22px;
-    color: #fff;
-}
-
-body {
-    min-height: 100vh;
-    background-color: dodgerblue;
-}
-
-.Header {
-    background-color: #fff;
-    padding: 10px;
-}
-
-.welcome {
-    margin-right: 30px;
-}
-
+/*
 .log-icon {
     color: black;
     cursor: pointer;
 }
-
-.active-left-nav {
-    /* position: absolute; */
+ */
+/* .active-left-nav {
+    position: absolute;
     background: transparent;
     border-radius: 10px;
     border-left: rgb(255, 136, 0) solid 5px;
     padding-left: 6px;
-}
+} */
 
 /* active-left-nav :hover ... */
 
-.left-nav {
+/* .left-nav {
     color: pink;
 }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-}
 
-.user {
-    display: flex;
-    align-items: center;
-    margin: 30px;
-    color: black;
-}
-
-.user p {
+.user ul p? { (header)
     margin-left: 30px;
 }
+ */
 
-.Header img {
-    object-fit: cover;
-    width: 148%;
-    height: 150px;
-    display: flex;
-}
-
-/* .nav-container {} */
-
-h5 {
-    color: black;
-}
-
+/*
 .App {
     display: flex;
     flex-direction: column;
@@ -136,12 +112,9 @@ label,
 button {
     margin-top: 1rem;
 }
+ */
 
-button {
-    padding: 0.5rem;
-}
-
-.instructions {
+/* .instructions {
     font-size: 0.75rem;
     border-radius: 0.5rem;
     background: #000;
@@ -196,7 +169,7 @@ button {
 .card {
     border: 2px solid orange;
     border-radius: 15px;
-}
+} */
 
 /* .file-icon {
     position: relative;
@@ -208,14 +181,14 @@ button {
     left: 20px;
 } */
 
-.spinner {
+/* .spinner {
     animation: spin infinite 1.3s linear;
 
     /*You can increase or decrease the timer (5s) to 
-     increase or decrease the speed of the spinner*/
-}
+     increase or decrease the speed of the spinner
+} */
 
-@keyframes spin {
+/* @keyframes spin {
     from {
         transform: rotate(0deg);
     }
@@ -223,4 +196,4 @@ button {
     to {
         transform: rotate(360deg);
     }
-}
+} */

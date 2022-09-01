@@ -11,16 +11,20 @@ import rootReducer from './reducers'
 // dev-tools  - must b removed for dev: redux-devtools-extension, logger
 import logger from 'redux-logger'
 import { getUsers } from './actions/usersActions'
+import { getPosts } from './actions/postActions'
 
 const store = createStore(
     rootReducer, composeWithDevTools( applyMiddleware( thunk, logger ) )
 )
 
 store.dispatch( getUsers() )
+store.dispatch( getPosts() )
 
 const root = ReactDOM.createRoot( document.getElementById( 'root' ) )
 root.render(
-    <Provider store={ store }>
-        < App />
-    </Provider>
+    <React.StrictMode>
+        <Provider store={ store }>
+            < App />
+        </Provider>
+    </React.StrictMode>
 )

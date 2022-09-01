@@ -59,7 +59,7 @@ const UpdateProfil = () => {
                         <p onClick={ () => setUpdateForm( !updateForm ) }>
                             { userData.username }
                         </p>
-                        <button onClick={ () => setUpdateForm( !updateForm ) }>
+                        <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ () => setUpdateForm( !updateForm ) }>
                             Modifier
                         </button>
                     </>
@@ -67,7 +67,7 @@ const UpdateProfil = () => {
                 { updateForm && (
                     <>
                         <input type='text' defaultValue={ userData.username } onChange={ ( e ) => setUsername( e.target.value ) } ></input>
-                        <button onClick={ HandleUpdate }>Valider</button>
+                        <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ HandleUpdate }>Valider</button>
                     </>
                 ) }
             </div>
@@ -75,7 +75,7 @@ const UpdateProfil = () => {
             <div className='user-delete'>
                 <h3>Suppression du compte</h3>
                 <p>Vous avez la possiblité de supprimer votre compte</p>
-                <button onClick={ HandleDelete }>Supprimer mon compte</button>
+                <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ HandleDelete }>Supprimer mon compte</button>
             </div>
         </div>
     </section>

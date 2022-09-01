@@ -14,7 +14,7 @@ const CreatePostForm = () => {
     const [ postImg, setPostImg ] = useState( null )
     const [ file, setFile ] = useState()
     //const [ post, setPost ] = useState()
-    const [ post, setPost ] = useState( { title: '', content: '', image: null } )//
+    const [ post, setPost ] = useState( { title: '', content: '', image: '' } )//
 
     const userData = useSelector( ( state ) => state.userReducer )
     const dispatch = useDispatch()
@@ -22,15 +22,15 @@ const CreatePostForm = () => {
     const handlePicture = ( e ) => {
         setPostImg( URL.createObjectURL( e.target.files[ 0 ] ) )
         console.log( e.target.files )
-        console.log( e.target.files[ 0 ].name )
-        setFile( e.target.files[ 0 ].name )
+        console.log( e.target.files[ 0 ] )
+        console.log( e.target.files[ 0 ].File )
+        setFile( ( e.target.files[ 0 ].name ) )
         setPost( {
             // ...post,
-            'title': title,
-            'content': message,
-            'image': file
+            title: title,
+            content: message,
             // userId: userData.id,
-            // image: file
+            image: file
         } )
         console.log( 'file:', file )
         console.log( 'content(message):', message )
@@ -40,11 +40,12 @@ const CreatePostForm = () => {
     const handlePost = async () => {
         if ( message ) {
             const data = new FormData()
-
             if ( file ) {
+
                 data.append( 'title', post.title )
                 data.append( 'content', post.content )
-                data.append( 'image', post.image )
+                data.append( 'image', post.file )
+                //data.append( 'image', file )
                 data.append( 'userId', userData.id )
             }
             else {
@@ -93,6 +94,7 @@ const CreatePostForm = () => {
         setMessage( '' )
         setPostImg( '' )
         setFile( '' )
+        setPost( { title: '', content: '' } )
     }
 
 
@@ -122,7 +124,7 @@ const CreatePostForm = () => {
                         value={ message }
                     />
                     { title || message || postImg ? (
-                        <li className="card-container">
+                        <li className="list-none">
                             <div className="card-header">
                                 <div className="user-name">
                                     De : { userData.username }
@@ -150,16 +152,16 @@ const CreatePostForm = () => {
                             <input
                                 type='file'
                                 id='img-upload'
-                                name='image'
+                                name='file'
                                 accept='.jpeg, .jpg, .png'
                                 onChange={ ( e ) => handlePicture( e ) }
                             />
                         </div>
                         <div className='send-btn'>
                             { title || message || postImg ? (
-                                <button className='btn cancel' onClick={ cancelPost }>Annuler</button>
+                                <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ cancelPost }>Annuler</button>
                             ) : null }
-                            <button className='btn send' onClick={ handlePost }>Envoyer</button>
+                            <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ handlePost }>Envoyer</button>
                         </div>
                     </div>
                 </div>

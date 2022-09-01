@@ -9,7 +9,7 @@ import CreatePostForm from '../../components/Post/CreatePostForm'
 function Home() {
     const uid = useContext( UidContext )
 
-    return <section className="Home">
+    return <section className="Home"> {/*main "app"?*/ }
         { uid ? ( <>
             <LeftNav />
             <div className='main'>

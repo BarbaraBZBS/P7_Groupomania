@@ -39,7 +39,7 @@ function Users() {
         <h2>Liste des utilisateurs</h2>
         { users?.length
             ? (
-                <ul>
+                <ul className='list-none'>
                     { users.map( ( user, i ) => <li key={ i }>{ user?.username }</li> ) }
                 </ul>
             ) : <p>Pas d'utilisateur à afficher</p>

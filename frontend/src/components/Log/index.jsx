@@ -19,20 +19,21 @@ const Log = ( props ) => {
         }
     }
 
-    return <>
-        <div>
-            <p>
+    return <main className='app'>
+        <div className='flex flex-row border-2 border-apppink rounded-xl py-32 px-10 w-7/12 bg-apppinklight shadow-xl'>
+            <div className='flex flex-col m-16'>
                 <button onClick={ handleProcess } id='login'
-                    className={ LoginProcess ? 'active-btn' : null }>Se Connecter</button>
-            </p>
-            <p>
+                    className={ LoginProcess ? 'btn-active' : 'btn btn-hover' }>Connexion</button>
+                <br />
                 <button onClick={ handleProcess } id='signup'
-                    className={ SignupProcess ? 'active-btn' : null }>S'inscrire</button>
-            </p> <br />
+                    className={ SignupProcess ? 'btn-active' : 'btn btn-hover' }>Inscription</button>
+            </div>
+
             { LoginProcess && <Login /> }
             { SignupProcess && <Signup /> }
+
         </div>
-    </>
+    </main>
 }
 
 export default Log

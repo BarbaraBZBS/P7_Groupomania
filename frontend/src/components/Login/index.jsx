@@ -57,12 +57,12 @@ function Login() {
         }
     }
 
-    return <section className="login">
+    return <section className="flex flex-col w-full">
         <p ref={ errRef } className={ errMsg ? 'errMsg' : 'offscreen' }
             aria-live='assertive'>{ errMsg }</p>
-        <h1> Connexion </h1>
-        <form onSubmit={ handleSubmit }>
-            <label htmlFor="email">Email</label>
+        <h1 className='text-2xl font-semi-bold'> Connexion </h1>
+        <form className='flex flex-col' onSubmit={ handleSubmit }>
+            <label htmlFor="email" className='label'>Email</label>
             <input
                 type="text"
                 id='email'
@@ -73,7 +73,7 @@ function Login() {
                 required
             />
 
-            <label htmlFor="password">Mot de passe</label>
+            <label htmlFor="password" className='label'>Mot de passe</label>
             <input
                 type="password"
                 id='password'
@@ -82,7 +82,7 @@ function Login() {
                 required
             />
             <br />
-            <button>Se Connecter</button>
+            <button className='btn btn-hover w-40'>Se Connecter</button>
         </form>
     </section>
 }

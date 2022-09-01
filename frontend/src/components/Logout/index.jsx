@@ -29,7 +29,7 @@ function Logout() {
         }
     }
 
-    return <li onClick={ logout }>
+    return <li className='li' onClick={ logout }>
         <FontAwesomeIcon icon={ faRightFromBracket } className='log-icon' />
     </li>
 }

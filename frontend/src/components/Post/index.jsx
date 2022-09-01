@@ -14,6 +14,7 @@ const Card = ( { post } ) => {
     const [ isLoading, setIsLoading ] = useState( true )
     const [ isTitleEditable, setIsTitleEditable ] = useState( false )
     const [ isContentEditable, setIsContentEditable ] = useState( false )
+
     const [ textUpdate, setTextUpdate ] = useState( null )
     const usersData = useSelector( ( state ) => state.usersReducer )
     const userData = useSelector( ( state ) => state.userReducer )
@@ -33,12 +34,14 @@ const Card = ( { post } ) => {
         setIsContentEditable( false )
     }
 
+
+
     useEffect( () => {
         !isEmpty( usersData[ 0 ] ) && setIsLoading( false )
     }, [ usersData ] )
 
     return <div className='card'>
-        <li className='card-container' key={ post.id }>
+        <li className='list-none' key={ post.id }>
             { isLoading ? (
                 <FontAwesomeIcon icon={ faFan } className='spinner' />
             ) : (
@@ -72,7 +75,7 @@ const Card = ( { post } ) => {
                                     defaultValue={ post.title }
                                     onChange={ ( e ) => setTextUpdate( e.target.value ) } />
                                 <div className='btn-container'>
-                                    <button className='btn' onClick={ updateTitle }>
+                                    <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ updateTitle }>
                                         Valider
                                     </button>
                                 </div>
@@ -96,7 +99,7 @@ const Card = ( { post } ) => {
                                     onChange={ ( e ) => setTextUpdate( e.target.value ) }
                                 />
                                 <div className='btn-container'>
-                                    <button className='btn' onClick={ updateContent }>
+                                    <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ updateContent }>
                                         Valider
                                     </button>
                                 </div>
@@ -111,6 +114,9 @@ const Card = ( { post } ) => {
                             <div onClick={ () => setIsContentEditable( !isContentEditable ) }>
                                 <FontAwesomeIcon icon={ faFilePen } className='edit-icon' />
                             </div>
+
+
+
                             <DeletePost className='delete-post' id={ post.id } />
                         </div>
                     ) }
