@@ -22,6 +22,7 @@ module.exports = {
             pink: colors.pink,
             red: colors.rose,
             yellow: colors.amber,
+            green: colors.lime,
             appblck: '#00070A',
             appred: '#FD2D01',
             apppink: '#FFD7D7',

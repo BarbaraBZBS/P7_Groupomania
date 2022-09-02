@@ -5,7 +5,7 @@
 
 @layer components {
     .btn {
-        @apply w-32 p-2 border-2 border-white bg-indigo-500 text-appblck rounded-xl active:bg-appstone mt-4
+        @apply w-32 p-2 border-2 border-white bg-indigo-500 text-appblck rounded-xl active:bg-appstone mt-4 cursor-pointer
     }
     .btn-hover {
         @apply hover:bg-indigo-800 hover:text-white
@@ -19,8 +19,35 @@
     .app {
         @apply flex justify-center items-center min-h-screen py-4 px-2
     }
+    .form {
+        @apply flex flex-col justify-evenly flex-grow pb-4
+    }
     .label {
-        @apply mt-4
+        @apply mt-4 leading-9
+    }
+    .errMsg {
+        @apply pt-2 pb-4 mb-6 font-semibold text-2xl text-appred bg-stone-900 rounded text-center
+    }
+    .offscreen {
+        @apply absolute -left-96
+    }
+    .input {
+        @apply p-1 rounded-lg
+    }
+    .valid {
+        @apply ml-1 text-green-600
+    }
+    .invalid {
+        @apply ml-1 text-appred
+    }
+    .instructions {
+        @apply text-sm rounded-lg bg-white p-1 relative top-2
+    }
+    .success {
+        @apply px-2 pt-2 pb-4 mb-6 font-semibold text-2xl text-green-600 bg-white rounded-lg text-center
+    }
+    .disabled {
+        @apply w-32 p-2 border-2 border-white bg-indigo-500 text-appblck rounded-xl opacity-50 mt-4 cursor-not-allowed
     }
 }
 
@@ -84,14 +111,6 @@ section {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    flex-grow: 1;
-    padding-bottom: 1rem;
-}
-
 a,
 a:visited {
     color: #fff;
@@ -108,44 +127,15 @@ textarea {
     border-radius: 0.5rem;
 }
 
-label,
-button {
-    margin-top: 1rem;
-}
  */
 
-/* .instructions {
-    font-size: 0.75rem;
-    border-radius: 0.5rem;
-    background: #000;
-    color: #fff;
-    padding: 0.25rem;
-    position: relative;
-    bottom: -10px;
-}
-
-.instructions>svg {
-    margin-right: 0.25rem;
-}
+/*
 
 .offscreen {
     position: absolute;
     left: -9999px;
 }
 
-.hide {
-    display: none;
-}
-
-.valid {
-    color: limegreen;
-    margin-left: 0.25rem;
-}
-
-.invalid {
-    color: red;
-    margin-left: 0.25rem;
-}
 
 .errmsg {
     background-color: lightpink;

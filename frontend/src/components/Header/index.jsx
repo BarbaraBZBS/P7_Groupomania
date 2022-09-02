@@ -25,7 +25,7 @@ function Header() {
                     <li></li>
                     <li >
                         <NavLink to='/profil'>
-                            <h5>Bienvenue { userData.username }</h5>
+                            <h5 className='mr-12'>Bienvenue { userData.username }</h5>
                         </NavLink>
                     </li>
                     <Logout />

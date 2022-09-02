@@ -44,26 +44,26 @@ function Login() {
         } catch ( err ) {
             if ( !err?.response ) {
                 console.log( err )
-                setErrMsg( 'Pas de réponse du serveur' )
+                setErrMsg( 'Pas de réponse du serveur !' )
             } else if ( err.response?.status === 400 ) {
                 setErrMsg( 'email/mot de passe manquant(s) ou invalide(s)' )
             } else if ( err.response?.status === 401 ) {
                 setErrMsg( 'Identifiant(s) incorrect(s)' )
             } else {
-                setErrMsg( 'La connection au compte a échoué' )
+                setErrMsg( 'La connection au compte a échoué !' )
                 console.log( err.response )
             }
             errRef.current.focus()
         }
     }
 
-    return <section className="flex flex-col w-full">
+    return <section>
         <p ref={ errRef } className={ errMsg ? 'errMsg' : 'offscreen' }
             aria-live='assertive'>{ errMsg }</p>
-        <h1 className='text-2xl font-semi-bold'> Connexion </h1>
-        <form className='flex flex-col' onSubmit={ handleSubmit }>
+        <h1 className='text-3xl font-semi-bold mb-6 text-center'> Connexion </h1>
+        <form className='form' onSubmit={ handleSubmit }>
             <label htmlFor="email" className='label'>Email</label>
-            <input
+            <input className='input'
                 type="text"
                 id='email'
                 ref={ userRef }
@@ -74,7 +74,7 @@ function Login() {
             />
 
             <label htmlFor="password" className='label'>Mot de passe</label>
-            <input
+            <input className='input'
                 type="password"
                 id='password'
                 onChange={ ( e ) => setPassword( e.target.value ) }
@@ -82,7 +82,7 @@ function Login() {
                 required
             />
             <br />
-            <button className='btn btn-hover w-40'>Se Connecter</button>
+            <button className='btn btn-hover w-40 self-center'>Se Connecter</button>
         </form>
     </section>
 }
