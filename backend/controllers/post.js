@@ -5,14 +5,7 @@ const sequelize = require( '../database/sequelize' );
 const Like = require( '../models/like' );
 
 exports.getAllPosts = ( req, res ) => {
-    // const limit = parseInt( req.query.limit );
-    // const offset = parseInt( req.query.offset );
-    // //const fields = req.query.fields;
-
     Post.findAll( {
-        //attributes: (fields !== '*' && fields != null ) ? fields.split(',') : null,
-        // limit: ( !isNaN( limit ) ) ? limit : 10,
-        // offset: ( !isNaN( offset ) ) ? offset : null,
         include: {
             model: User,
             attributes: [ 'username', 'email' ]
@@ -48,23 +41,31 @@ exports.getOnePost = ( req, res ) => {
 };
 
 exports.createPost = async ( req, res, next ) => {
+    console.log( req.body );
+    console.log( req.file );
     try {
-        const postObject = req.file ? {
-            ...JSON.parse( req.body.post ),
-            image: `${ req.protocol }://${ req.get( 'host' ) }/images/${ req.file.filename }`
-        } : { ...req.body };
-        // delete postObject.id;
-        //delete postObject.userId;
-
-        await Post.create( {
-            ...postObject,
-            userId: req.body.userId
-            //userId: req.auth.userId,
-        } );
+        let imagePath = '';
+        if ( req.file ) {
+            imagePath = `${ req.protocol }://${ req.get( "host" ) }/images/${ req.file.filename }`;
+            await Post.create( {
+                title: req.body.title,
+                content: req.body.content,
+                image: imagePath,
+                userId: req.body.userId
+            } )
+        }
+        else {
+            await Post.create( {
+                title: req.body.title,
+                content: req.body.content,
+                userId: req.body.userId
+            } )
+        }
         res.status( 201 ).json( { message: 'post created' } );
         console.log( 'success: post created' );
     }
     catch ( error ) {
+        console.log( error )
         res.status( 400 ).json( { error } )
         console.log( 'error: post not created', res.statusCode );
     }
@@ -76,17 +77,11 @@ exports.modifyPost = async ( req, res, next ) => {
             ...JSON.parse( req.body.post ),
             image: `${ req.protocol }://${ req.get( 'host' ) }/images/${ req.file.filename }`
         } : { ...req.body };
-        //delete postObject.userId;
         await Post.findByPk( req.params.id )
             .then( ( post ) => {
-                // if ( post.userId != req.auth.userId ) {
-                //     res.status( 401 ).json( { message: 'Unauthorized' } );
-                // }
-                // else {
                 post.update( {
                     ...postObject,
-                    //userId: req.auth.userId,
-                    //id: req.params.id
+                    //userId: req.body.userId
                 } )
                     .then( ( post ) => {
                         if ( post ) {
@@ -97,7 +92,6 @@ exports.modifyPost = async ( req, res, next ) => {
                         }
                     } )
                     .catch( error => res.status( 401 ).json( { error } ) );
-                // }
             } );
     }
     catch ( error ) {

@@ -46,36 +46,43 @@ const UpdateProfil = () => {
         }
     }
 
-    return <section className='profil-container'>
+    return <section>
         <LeftNav />
-        <h1> Profil de { userData.username }</h1>
-        <p> { userData.email }</p>
-        <br />
-        <div className='update-container'>
-            <div className='name-update'>
-                <h3>Modification du nom d'utilisateur</h3>
-                { updateForm === false && (
-                    <>
-                        <p onClick={ () => setUpdateForm( !updateForm ) }>
-                            { userData.username }
-                        </p>
-                        <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ () => setUpdateForm( !updateForm ) }>
-                            Modifier
-                        </button>
-                    </>
-                ) }
-                { updateForm && (
-                    <>
-                        <input type='text' defaultValue={ userData.username } onChange={ ( e ) => setUsername( e.target.value ) } ></input>
-                        <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ HandleUpdate }>Valider</button>
-                    </>
-                ) }
-            </div>
+        <div className='flex justify-center items-center flex-col text-center'>
+            <h1 className='title1 uppercase'> Profil de { userData.username }</h1>
+            <p> { userData.email }</p>
             <br />
-            <div className='user-delete'>
-                <h3>Suppression du compte</h3>
-                <p>Vous avez la possiblité de supprimer votre compte</p>
-                <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ HandleDelete }>Supprimer mon compte</button>
+            <div>
+                <div className='userupd-card border-appstone'>
+                    <h2 className='title2'>Modification du nom d'utilisateur</h2>
+                    { updateForm === false && (
+                        <>
+                            <p onClick={ () => setUpdateForm( !updateForm ) }>
+                                { userData.username }
+                            </p>
+                            <button className='btn btn-hover' onClick={ () => setUpdateForm( !updateForm ) }>
+                                Modifier
+                            </button>
+                        </>
+                    ) }
+                    { updateForm && (
+                        <>
+                            <input className='input'
+                                type='text'
+                                defaultValue={ userData.username }
+                                onChange={ ( e ) => setUsername( e.target.value ) } >
+                            </input>
+                            <br />
+                            <button className='btn btn-hover' onClick={ HandleUpdate }>Valider</button>
+                        </>
+                    ) }
+                </div>
+                <br />
+                <div className='userupd-card border-appred'>
+                    <h2 className='title2'>Suppression du compte</h2>
+                    <p>Vous avez la possiblité de supprimer votre compte</p>
+                    <button className='btn-delete w-64' onClick={ HandleDelete }>Supprimer mon compte</button>
+                </div>
             </div>
         </div>
     </section>

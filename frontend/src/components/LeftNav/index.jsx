@@ -4,16 +4,22 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 const LeftNav = () => {
-    return <aside className='left-nav-container'>
-        <div className='icons'>
-            <div className='icons-bis'>
-                <NavLink to='/' className={ ( navData ) => navData.isActive ? 'active-left-nav' : '' }>
-                    <FontAwesomeIcon icon={ faHouse } className='left-nav' />
-                </NavLink>
+    return <aside className='w-20 flex flex-col pb-6 p-3 asbolute'>
+        <div className='icons fixed z-10'>
+            <div className='icons-bis absolute left-3 pt-20'>
+                <div className='h-5'>
+                    <NavLink to='/' className={ ( navData ) => navData.isActive ? 'leftnav-active' : '' }>
+                        <FontAwesomeIcon icon={ faHouse } className='leftnav-icon py-2' />
+                    </NavLink>
+
+                </div>
                 <br />
-                <NavLink to='/profil' className={ ( navData ) => navData.isActive ? 'active-left-nav' : '' }>
-                    <FontAwesomeIcon icon={ faUser } className='left-nav' />
-                </NavLink>
+                <div className='h-5'>
+                    <NavLink to='/profil' className={ ( navData ) => navData.isActive ? 'leftnav-active' : '' }>
+                        <FontAwesomeIcon icon={ faUser } className='leftnav-icon py-2' />
+                    </NavLink>
+
+                </div>
             </div>
         </div>
     </aside>

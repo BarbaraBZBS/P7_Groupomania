@@ -9,20 +9,20 @@ import CreatePostForm from '../../components/Post/CreatePostForm'
 function Home() {
     const uid = useContext( UidContext )
 
-    return <section className="Home"> {/*main "app"?*/ }
-        { uid ? ( <>
+    return <>
+        { uid ? ( <section>
             <LeftNav />
-            <div className='main'>
+            <div className='flex justify-center items-center flex-col text-center p-5'>
                 <div className='home-header'>
                     <CreatePostForm />
                 </div>
                 <Thread />
             </div>
-        </>
+        </section>
         ) : (
             <Log login={ true } signup={ false } />
         ) }
-    </section >
+    </ >
 }
 
 export default Home

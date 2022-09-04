@@ -13,6 +13,9 @@
     .btn-active {
         @apply w-32 p-2 border-2 border-appstone bg-appstone  text-white rounded-xl
     }
+    .btn-delete {
+        @apply w-32 p-2 border-2 border-appred bg-appred text-white rounded-xl hover:bg-red-800 active:bg-appstone mt-4 cursor-pointer
+    }
     .li {
         @apply list-none
     }
@@ -49,141 +52,37 @@
     .disabled {
         @apply w-32 p-2 border-2 border-white bg-indigo-500 text-appblck rounded-xl opacity-50 mt-4 cursor-not-allowed
     }
-}
-
-
-/* ul,
-li {
-    list-style: none;
-}
-button:hover {
-    background: rgba(76, 76, 76, 0.4);
-}
-.active-btn {
-    background-color: rgba(150, 99, 99, 0.4);
-}
-
-/*
-.log-icon {
-    color: black;
-    cursor: pointer;
-}
- */
-/* .active-left-nav {
-    position: absolute;
-    background: transparent;
-    border-radius: 10px;
-    border-left: rgb(255, 136, 0) solid 5px;
-    padding-left: 6px;
-} */
-
-/* active-left-nav :hover ... */
-
-/* .left-nav {
-    color: pink;
-}
-
-
-.user ul p? { (header)
-    margin-left: 30px;
-}
- */
-
-/*
-.App {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 1rem 0.5rem;
-}
-
-section {
-    width: 100%;
-    max-width: 420px;
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 1rem;
-    border-radius: 15px;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-a,
-a:visited {
-    color: #fff;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="email"],
-button,
-textarea {
-    font-family: 'Nunito', sans-serif;
-    font-size: 22px;
-    padding: 0.25rem;
-    border-radius: 0.5rem;
-}
-
- */
-
-/*
-
-.offscreen {
-    position: absolute;
-    left: -9999px;
-}
-
-
-.errmsg {
-    background-color: lightpink;
-    color: firebrick;
-    font-weight: bold;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.line {
-    display: inline-block;
-}
-
-.flexGrow {
-    flex-grow: 1;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
-}
-
-.card {
-    border: 2px solid orange;
-    border-radius: 15px;
-} */
-
-/* .file-icon {
-    position: relative;
-}
-
-#img-upload {
-    opacity: 0;
-    position: absolute;
-    left: 20px;
-} */
-
-/* .spinner {
-    animation: spin infinite 1.3s linear;
-
-    /*You can increase or decrease the timer (5s) to 
-     increase or decrease the speed of the spinner
-} */
-
-/* @keyframes spin {
-    from {
-        transform: rotate(0deg);
+    .title1 {
+        @apply text-3xl font-semibold mb-6
     }
-
-    to {
-        transform: rotate(360deg);
+    .title2 {
+        @apply text-2xl font-semibold mb-4
     }
-} */
+    .icon {
+        @apply cursor-pointer text-2xl
+    }
+    .userupd-card {
+        @apply border-2 rounded-lg p-3 shadow-md bg-violet-200
+    }
+    .leftnav-icon {
+        @apply text-3xl text-appstone
+    }
+    .leftnav-active {
+        @apply bg-transparent rounded-2xl border-l-4 pl-2 border-l-appred absolute animate-scale
+    }
+    .new-post-card {
+        @apply flex flex-col bg-appoppink py-4 px-10 mb-12 rounded-2xl shadow-lg max-w-3xl w-auto min-w-[700px]
+    }
+    .new-post-overview {
+        @apply bg-white border-2 border-appstone rounded-2xl mt-2 mb-3 shadow-md
+    }
+    .card-img {
+        @apply object-cover flex justify-center self-center items-center rounded-md max-w-[690px] m-auto h-80
+    }
+    .post-card {
+        @apply bg-appsand border-2 border-gray-300 rounded-2xl mt-2 shadow-md mb-6 max-w-3xl
+    }
+    .card-header {
+        @apply flex flex-row justify-evenly text-center
+    }
+}

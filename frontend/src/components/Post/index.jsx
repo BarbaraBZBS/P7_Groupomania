@@ -40,14 +40,14 @@ const Card = ( { post } ) => {
         !isEmpty( usersData[ 0 ] ) && setIsLoading( false )
     }, [ usersData ] )
 
-    return <div className='card'>
-        <li className='list-none' key={ post.id }>
+    return <div className='post-card'>
+        <li className='li' key={ post.id }>
             { isLoading ? (
-                <FontAwesomeIcon icon={ faFan } className='spinner' />
+                <FontAwesomeIcon icon={ faFan } className='bg-transparent text-appstone animate-spin' />
             ) : (
                 <>
-                    <div className='card-header'>
-                        <div className='user-name'>
+                    <div className='card-header mt-3 mb-4'>
+                        <div className='font-semibold mx-1 px-1'>
                             { !isEmpty( usersData[ 0 ] ) &&
                                 usersData.map( ( user ) => {
                                     if ( user.id === post.userId ) return 'De : ' + user.username
@@ -56,7 +56,7 @@ const Card = ( { post } ) => {
                         </div>
                         { ( userData.id === post.userId || isTitleEditable === false ) && (
                             <>
-                                <div className='post-title' onClick={ () => ( userData.id === post.userId &&
+                                <div className='mx-1 px-1' onClick={ () => ( userData.id === post.userId &&
                                     ( setIsTitleEditable( !isTitleEditable ) ) ) }>
                                     { post.title }
                                 </div>
@@ -64,65 +64,63 @@ const Card = ( { post } ) => {
                         ) }
                         { ( userData.id === post.userId ) && (
                             <div onClick={ () => setIsTitleEditable( !isTitleEditable ) }>
-                                <FontAwesomeIcon icon={ faPenToSquare } className='title-icon' />
+                                <FontAwesomeIcon icon={ faPenToSquare } className='text-violet-900 cursor-pointer' />
                             </div>
                         ) }
 
                         { isTitleEditable && (
-                            <div className='update-title'>
-                                <input
+                            <div className='ml-2'>
+                                <input className='input m-0 p-0 shadow-md'
                                     type='text'
                                     defaultValue={ post.title }
                                     onChange={ ( e ) => setTextUpdate( e.target.value ) } />
-                                <div className='btn-container'>
-                                    <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ updateTitle }>
+                                <div>
+                                    <button className='btn btn-hover' onClick={ updateTitle }>
                                         Valider
                                     </button>
                                 </div>
                             </div>
                         ) }
-                        <span className='card-time'>{ dateParser( post.createdAt ) }</span>
+                        <span className='italic mx-1 px-1'>{ dateParser( post.createdAt ) }</span>
                     </div>
-                    <div className='card-content'>
+                    <div className='mx-7 my-2'>
                         { ( userData.id === post.userId || isContentEditable === false ) && (
                             <>
-                                <p className='post-content' onClick={ () => ( userData.id === post.userId &&
+                                <p className='mb-6' onClick={ () => ( userData.id === post.userId &&
                                     ( setIsContentEditable( !isContentEditable ) ) ) }>
                                     { post.content }
                                 </p>
                             </>
                         ) }
                         { isContentEditable && (
-                            <div className='update-content'>
-                                <textarea
+                            <div>
+                                <textarea className='input w-96 shadow-md'
                                     defaultValue={ post.content }
                                     onChange={ ( e ) => setTextUpdate( e.target.value ) }
                                 />
-                                <div className='btn-container'>
-                                    <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ updateContent }>
+                                <div>
+                                    <button className='btn btn-hover mb-3' onClick={ updateContent }>
                                         Valider
                                     </button>
                                 </div>
                             </div>
                         ) }
-                        <div className='post-img'>
-                            { post.image && <img src={ post.image } alt='post' className='card-img' /> }
+                        <div>
+                            { post.image && <img src={ post.image } alt='Post' className='card-img' /> }
                         </div>
                     </div>
                     { userData.id === post.userId && (
-                        <div className='btn-container'>
-                            <div onClick={ () => setIsContentEditable( !isContentEditable ) }>
-                                <FontAwesomeIcon icon={ faFilePen } className='edit-icon' />
+                        <div className='flex flex-row justify-end'>
+                            <div className='m-1' onClick={ () => setIsContentEditable( !isContentEditable ) }>
+                                <FontAwesomeIcon icon={ faFilePen } className='text-violet-900 cursor-pointer' />
                             </div>
 
 
-
-                            <DeletePost className='delete-post' id={ post.id } />
+                            <DeletePost id={ post.id } />
                         </div>
                     ) }
-                    <div className='card-footer'>
-                        <FontAwesomeIcon icon={ faHeart } className='like-icon' />
-                        <h4>like button</h4>
+                    <div>
+                        <FontAwesomeIcon icon={ faHeart } className='icon mb-2' />
                     </div>
                 </>
             ) }

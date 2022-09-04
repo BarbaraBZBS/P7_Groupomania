@@ -14,7 +14,7 @@ function Header() {
     return <header className='bg-white p-3 w-full'>
         <nav className='flex justify-between'>
             <div>
-                <div className='logo'>
+                <div>
                     <NavLink to='/'>
                         <img src={ Logo } alt='Logo Groupomania' className='flex h-32 object-cover w-64' />
                     </NavLink>
@@ -25,7 +25,7 @@ function Header() {
                     <li></li>
                     <li >
                         <NavLink to='/profil'>
-                            <h5 className='mr-12'>Bienvenue { userData.username }</h5>
+                            <h5 className='mr-12 font-semibold'>Bienvenue { userData.username }</h5>
                         </NavLink>
                     </li>
                     <Logout />
@@ -35,7 +35,7 @@ function Header() {
                     <li></li>
                     <li>
                         <NavLink to='/profil'>
-                            <FontAwesomeIcon icon={ faRightToBracket } className='log-icon' />
+                            <FontAwesomeIcon icon={ faRightToBracket } className='icon' />
                         </NavLink>
                     </li>
                 </ul>

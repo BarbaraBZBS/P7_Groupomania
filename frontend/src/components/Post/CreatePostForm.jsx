@@ -13,77 +13,30 @@ const CreatePostForm = () => {
     const [ message, setMessage ] = useState( '' )
     const [ postImg, setPostImg ] = useState( null )
     const [ file, setFile ] = useState()
-    //const [ post, setPost ] = useState()
-    const [ post, setPost ] = useState( { title: '', content: '', image: '' } )//
 
     const userData = useSelector( ( state ) => state.userReducer )
     const dispatch = useDispatch()
 
     const handlePicture = ( e ) => {
         setPostImg( URL.createObjectURL( e.target.files[ 0 ] ) )
-        console.log( e.target.files )
         console.log( e.target.files[ 0 ] )
-        console.log( e.target.files[ 0 ].File )
-        setFile( ( e.target.files[ 0 ].name ) )
-        setPost( {
-            // ...post,
-            title: title,
-            content: message,
-            // userId: userData.id,
-            image: file
-        } )
+        setFile( ( e.target.files[ 0 ] ) )
         console.log( 'file:', file )
-        console.log( 'content(message):', message )
-        console.log( 'title:', title )
     }
 
     const handlePost = async () => {
         if ( message ) {
             const data = new FormData()
-            if ( file ) {
 
-                data.append( 'title', post.title )
-                data.append( 'content', post.content )
-                data.append( 'image', post.file )
-                //data.append( 'image', file )
-                data.append( 'userId', userData.id )
-            }
-            else {
-                data.append( 'title', title )
-                data.append( 'content', message )
-                data.append( 'userId', userData.id )
-            }
-
-            // const post = new FormData()
-            // if ( !file ) {
-            // data.append( 'userId', userData.id )
-            // data.append( 'title', title )
-            // post.append( 'content', message )
-            //let image
-            //let userId
-            // const image = file
-            // const userId = userData.id
-            // if ( file ) data.append( 'image', file )
-            // }
-            // else {
-            //setPost( { 'title': title, 'content': message } )
-
-            // data.append( post, { 'title': title, 'content': message } )//, post
-            // data.append( userId, userData.id )//, userId
-            // data.append( 'image', file )//, image
-
-            //     // post.append( 'title', title )
-            //     // post.append( 'content', message )
-
-            //     data.append( 'post', post )
-            //     data.append( 'userId', userData.id )
-            //     data.append( 'image', file )
-            // }
+            data.append( 'title', title )
+            data.append( 'content', message )
+            if ( file ) data.append( 'image', file )
+            data.append( 'userId', userData.id )
+            console.log( data )
 
             await dispatch( addPost( data ) )
             dispatch( getPosts() )
             cancelPost()
-
         } else {
             alert( 'Veuillez entrer un message !' )
         }
@@ -94,29 +47,27 @@ const CreatePostForm = () => {
         setMessage( '' )
         setPostImg( '' )
         setFile( '' )
-        setPost( { title: '', content: '' } )
     }
-
 
     useEffect( () => {
         if ( !isEmpty( userData ) ) setIsLoading( false )
     }, [ userData ] )
 
-    return <div className='post-container'>
+    return <div className='flex flex-col'>
         { isLoading ? (
-            <FontAwesomeIcon icon={ faFan } className='spinner' />
+            <FontAwesomeIcon icon={ faFan } className='animate-spin' />
         ) : (
             <>
-                <h3>Ajouter un nouveau message </h3>
-                <div className='post-form'>
-                    <input
+                <div className='new-post-card form'>
+                    <h1 className='title2'>Ajouter un nouveau message </h1>
+                    <input className='input mb-2 shadow-md'
                         type='text'
                         id='title'
                         placeholder='Titre du post... (optionnel)'
                         onChange={ ( e ) => setTitle( e.target.value ) }
                         value={ title }
                     />
-                    <textarea
+                    <textarea className='input mb-2 shadow-md'
                         name='message'
                         id='message'
                         placeholder='Votre post ici...'
@@ -124,44 +75,46 @@ const CreatePostForm = () => {
                         value={ message }
                     />
                     { title || message || postImg ? (
-                        <li className="list-none">
-                            <div className="card-header">
-                                <div className="user-name">
+                        <li className='new-post-overview li form'>
+                            <div className='card-header mt-2'>
+                                <div className='mx-1 px-1'>
                                     De : { userData.username }
                                 </div>
-                                <div className="post-title">
+                                <div className='mx-1 px-1'>
                                     { title }
                                 </div>
-                                <span className="card-time">
+                                <span className='italic mx-1 px-1'>
                                     { timestampParser( Date.now() ) }
                                 </span>
                             </div>
-                            <div className="card-content">
-                                <p className="post-content">
+                            <div className='mx-3 my-2'>
+                                <p className='mb-4'>
                                     { message }
                                 </p>
-                                <div className="post-img">
-                                    <img src={ postImg } alt='' />
+                                <div>
+                                    { postImg ? (
+                                        <img src={ postImg } alt='' className='card-img' />
+                                    ) : null }
                                 </div>
                             </div>
                         </li>
                     ) : null }
-                    <div className='footer-form'>
-                        <div className='post-icon'>
-                            <FontAwesomeIcon icon={ faImage } className='file-icon' />
-                            <input
+                    <div className='flex flex-row justify-between'>
+                        <div className='relative'>
+                            <FontAwesomeIcon icon={ faImage } className='icon mx-1 absolute' />
+                            <input className='input absolute w-7 h-6 cursor-pointer text-[0px] opacity-0 indent-[-100px]'
                                 type='file'
                                 id='img-upload'
-                                name='file'
+                                name='image'
                                 accept='.jpeg, .jpg, .png'
                                 onChange={ ( e ) => handlePicture( e ) }
                             />
                         </div>
-                        <div className='send-btn'>
+                        <div>
                             { title || message || postImg ? (
-                                <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ cancelPost }>Annuler</button>
+                                <button className='btn-delete my-0 mx-2' onClick={ cancelPost }>Annuler</button>
                             ) : null }
-                            <button className='bg-indigo-900 active:bg-appstone hover: bg-blue-900' onClick={ handlePost }>Envoyer</button>
+                            <button className='btn btn-hover my-0 mx-2' onClick={ handlePost }>Envoyer</button>
                         </div>
                     </div>
                 </div>

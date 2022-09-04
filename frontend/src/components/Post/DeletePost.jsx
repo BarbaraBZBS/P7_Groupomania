@@ -11,13 +11,13 @@ const DeletePost = ( props ) => {
         dispatch( deletePost( props.id ) )
     }
 
-    return <div onClick={ () => {
+    return <div className='ml-1 mr-3 my-1' onClick={ () => {
         const answer = window.confirm( 'Êtes-vous sûr(e) de vouloir supprimer ce post ? ' )
         if ( answer ) {
             userDeletePost()
         } else return
     } }>
-        <FontAwesomeIcon icon={ faTrashCan } className='delete-icon' />
+        <FontAwesomeIcon icon={ faTrashCan } className='text-appred cursor-pointer' />
     </div>
 }
 

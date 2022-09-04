@@ -19,7 +19,7 @@ const Log = ( props ) => {
         }
     }
 
-    return <main className='app'>
+    return <section className='app'>
         <div className='flex flex-row border-2 border-apppink rounded-xl py-20 px-10 w-7/12 bg-apppinklight shadow-xl'>
             <div className='flex flex-col m-12 justify-center'>
                 <button onClick={ handleProcess } id='login'
@@ -33,7 +33,7 @@ const Log = ( props ) => {
             { SignupProcess && <Signup /> }
 
         </div>
-    </main>
+    </section>
 }
 
 export default Log

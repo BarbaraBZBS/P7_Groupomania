@@ -6,7 +6,22 @@ module.exports = {
         './src/**/*.{js,jsx,ts,tsx}',
     ],
     theme: {
-        extend: {},
+        extend: {
+            keyframes: {
+                spin: {
+                    from: { transform: 'rotate( 0deg )' },
+                    to: { transform: 'rotate( 360deg )' }
+                },
+                scale: {
+                    from: { transform: 'scaleY( 0 )' },
+                    to: { transform: 'scaleY( 1 )' }
+                }
+            },
+            animation: {
+                spin: 'spin infinite 1.3s linear',
+                scale: 'scale 1s ease forwards'
+            }
+        },
         fontFamily: {
             txt: [ 'Lato', 'sans-serif' ]
         },
@@ -27,7 +42,11 @@ module.exports = {
             appred: '#FD2D01',
             apppink: '#FFD7D7',
             apppinklight: '#ffe0e0',
-            appstone: '#4E5166'
+            appstone: '#4E5166',
+            appopred: '#01D1FD',
+            appoppink: '#D7FFFF',
+            appopstone: '#66634E',
+            appsand: '#fdfdf9'
         }
     },
     plugins: [],

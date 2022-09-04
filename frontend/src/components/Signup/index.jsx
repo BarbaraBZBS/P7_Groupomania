@@ -116,7 +116,7 @@ function Signup() {
         ) : (
             <section>
                 <p ref={ errRef } className={ errMsg ? 'errMsg' : 'offscreen' } aria-live="assertive">{ errMsg }</p>
-                <h1 className='text-3xl font-semi-bold mb-6 text-center'>Inscription</h1>
+                <h1 className='title1 text-center'>Inscription</h1>
                 <form className='form' onSubmit={ handleSubmit }>
                     <label htmlFor="username" className='label'>
                         Nom d'utilisateur :
