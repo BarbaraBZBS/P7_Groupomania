@@ -1,6 +1,5 @@
 import LeftNav from '../../components/LeftNav'
 import { useContext } from 'react'
-//import { useLocation, Navigate } from 'react-router-dom'
 import { UidContext } from '../../context/AppContext'
 import Thread from '../../components/Thread'
 import Log from '../../components/Log'
@@ -13,9 +12,7 @@ function Home() {
         { uid ? ( <section>
             <LeftNav />
             <div className='flex justify-center items-center flex-col text-center p-5'>
-                <div className='home-header'>
-                    <CreatePostForm />
-                </div>
+                <CreatePostForm />
                 <Thread />
             </div>
         </section>

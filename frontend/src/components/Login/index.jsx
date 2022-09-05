@@ -31,16 +31,9 @@ function Login() {
                 }
             )
             console.log( JSON.stringify( response?.data ) )
-            // const token = response?.data?.token
-            const role = response?.data?.role
-            //( [ response.data.userId, response.data.role, response.data.token ] ) )
             setEmail( '' )
             setPassword( '' )
-            if ( role === 'user' ) {
-                window.location = '/'
-            } else if ( role === 'admin' ) {
-                window.location = '/admin'
-            }
+            window.location = '/'
         } catch ( err ) {
             if ( !err?.response ) {
                 console.log( err )
@@ -60,7 +53,7 @@ function Login() {
     return <section>
         <p ref={ errRef } className={ errMsg ? 'errMsg' : 'offscreen' }
             aria-live='assertive'>{ errMsg }</p>
-        <h1 className='title1 text-center'> Connexion </h1>
+        <h1 className='title2 sm:title1 text-center'> Connexion </h1>
         <form className='form' onSubmit={ handleSubmit }>
             <label htmlFor="email" className='label'>Email</label>
             <input className='input'

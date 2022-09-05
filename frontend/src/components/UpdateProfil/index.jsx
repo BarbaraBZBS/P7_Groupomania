@@ -46,15 +46,15 @@ const UpdateProfil = () => {
         }
     }
 
-    return <section>
+    return <section className='pb-6'>
         <LeftNav />
-        <div className='flex justify-center items-center flex-col text-center'>
-            <h1 className='title1 uppercase'> Profil de { userData.username }</h1>
+        <div className='userupd-container'>
+            <h1 className='title2 sm:title1 sm:uppercase'> Profil de { userData.username }</h1>
             <p> { userData.email }</p>
             <br />
             <div>
                 <div className='userupd-card border-appstone'>
-                    <h2 className='title2'>Modification du nom d'utilisateur</h2>
+                    <h2 className='text-lg font-semibold sm:title2'>Modification du nom d'utilisateur</h2>
                     { updateForm === false && (
                         <>
                             <p onClick={ () => setUpdateForm( !updateForm ) }>
@@ -79,9 +79,9 @@ const UpdateProfil = () => {
                 </div>
                 <br />
                 <div className='userupd-card border-appred'>
-                    <h2 className='title2'>Suppression du compte</h2>
+                    <h2 className='text-lg font-semibold sm:title2'>Suppression du compte</h2>
                     <p>Vous avez la possiblité de supprimer votre compte</p>
-                    <button className='btn-delete w-64' onClick={ HandleDelete }>Supprimer mon compte</button>
+                    <button className='btn-delete sm:w-64' onClick={ HandleDelete }>Supprimer mon compte</button>
                 </div>
             </div>
         </div>

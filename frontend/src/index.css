@@ -4,6 +4,12 @@
 @tailwind utilities;
 
 @layer components {
+    .log-container {
+        @apply flex flex-col border-2 border-apppink rounded-xl px-8 bg-apppinklight shadow-xl py-3 w-3/4 sm:px-10 sm:py-8 sm:w-[531px] sm:flex-row md:px-10 md:py-10 md:w-[539px] md:flex-row lg:px-10 lg:py-20 lg:w-7/12 lg:flex-row
+    }
+    .log {
+        @apply flex flex-col justify-center items-center mt-8 mb-12 p-3 sm:ml-0 sm:mr-10 sm:my-10 md:ml-0 md:mr-12 md:my-12 lg:m-12
+    }
     .btn {
         @apply w-32 p-2 border-2 border-white bg-indigo-500 text-appblck rounded-xl active:bg-appstone mt-4 cursor-pointer
     }
@@ -61,28 +67,34 @@
     .icon {
         @apply cursor-pointer text-2xl
     }
+    .userupd-container {
+        @apply flex justify-center items-center flex-col text-center
+    }
     .userupd-card {
-        @apply border-2 rounded-lg p-3 shadow-md bg-violet-200
+        @apply border-2 rounded-lg p-3 w-3/4 m-auto shadow-md bg-violet-200 sm:w-[490px]
     }
     .leftnav-icon {
-        @apply text-3xl text-appstone
+        @apply text-lg sm:text-3xl text-appstone
     }
     .leftnav-active {
         @apply bg-transparent rounded-2xl border-l-4 pl-2 border-l-appred absolute animate-scale
     }
     .new-post-card {
-        @apply flex flex-col bg-appoppink py-4 px-10 mb-12 rounded-2xl shadow-lg max-w-3xl w-auto min-w-[700px]
+        @apply flex flex-col bg-appoppink py-4 px-2 sm:px-10 mb-12 rounded-2xl shadow-lg w-[85%] min-w-[211px] max-w-[510px] sm:min-w-[482px] sm:max-w-[482px] md:min-w-[590px] md:max-w-[590px] lg:min-w-[700px] lg:max-w-3xl
     }
     .new-post-overview {
         @apply bg-white border-2 border-appstone rounded-2xl mt-2 mb-3 shadow-md
     }
     .card-img {
-        @apply object-cover flex justify-center self-center items-center rounded-md max-w-[690px] m-auto h-80
+        @apply object-cover flex justify-center self-center items-center rounded-xl m-auto h-60 max-w-[95%] sm:h-80 sm:max-w-[472px] md:max-w-[580px] lg:max-w-[690px]
     }
     .post-card {
-        @apply bg-appsand border-2 border-gray-300 rounded-2xl mt-2 shadow-md mb-6 max-w-3xl
+        @apply bg-appsand border-2 border-gray-300 rounded-2xl mt-2 shadow-md mb-6 mx-auto max-w-[88%] sm:max-w-[482px] md:max-w-[590px] lg:max-w-3xl
     }
     .card-header {
         @apply flex flex-row justify-evenly text-center
+    }
+    .loader-spinner {
+        @apply flex justify-center h-screen items-center m-auto z-[999]
     }
 }

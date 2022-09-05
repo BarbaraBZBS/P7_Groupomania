@@ -5,7 +5,6 @@ import Router from './components/Routes'
 import { useDispatch } from 'react-redux'
 import { getUser } from './actions/userActions'
 import { BallTriangle } from 'react-loader-spinner'
-//const ROLES = `${ process.env.ROLES }`
 
 
 function App() {
@@ -42,10 +41,10 @@ function App() {
     return <>
         {
             loading ?
-                <div className='flex justify-center self-center content-center h-screen items-center m-auto bg-white z-[999]'>
+                <div className='loader-spinner'>
                     <BallTriangle
-                        height={ 400 }
-                        width={ 400 }
+                        height={ 200 }
+                        width={ 200 }
                         radius={ 5 }
                         color="#4E5166"
                         ariaLabel="ball-triangle-loading"

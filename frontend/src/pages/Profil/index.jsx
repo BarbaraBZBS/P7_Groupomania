@@ -10,7 +10,7 @@ const Profil = () => {
         { uid ? (
             <UpdateProfil />
         ) : (
-            <div className='profil-container'>
+            <div>
                 <Log login={ false } signup={ true } />
             </div>
         ) }

@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getPosts } from '../../actions/postActions'
 import { isEmpty } from '../../utils'
 import Card from '../Post'
+import CardAdmin from '../Post/CardAdmin'
 
 const Thread = () => {
     const [ loadPost, setLoadPost ] = useState( true )
     const [ count, setCount ] = useState( 5 )
     const dispatch = useDispatch()
     const posts = useSelector( ( state ) => state.postReducer )
+    const userData = useSelector( ( state ) => state.userReducer )
 
     const loadMore = () => {
         if ( window.innerHeight + document.documentElement.scrollTop + 1 >
@@ -29,13 +31,22 @@ const Thread = () => {
     }, [ loadPost, dispatch, count ] )
 
     return <div className='thread-container'>
-        <ul>
-            { !isEmpty( posts[ 0 ] ) &&
-                posts.map( ( post ) => {
-                    return <Card post={ post } key={ post.id } />
-                } ) }
-        </ul>
-    </div>
+        { userData.role === 'admin' ? (
+            <ul>
+                { !isEmpty( posts[ 0 ] ) &&
+                    posts.map( ( post ) => {
+                        return <CardAdmin post={ post } key={ post.id } />
+                    } ) }
+            </ul>
+        ) : (
+            <ul>
+                { !isEmpty( posts[ 0 ] ) &&
+                    posts.map( ( post ) => {
+                        return <Card post={ post } key={ post.id } />
+                    } ) }
+            </ul>
+        ) }
+    </div >
 }
 
 export default Thread

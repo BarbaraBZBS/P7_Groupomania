@@ -53,13 +53,13 @@ const CreatePostForm = () => {
         if ( !isEmpty( userData ) ) setIsLoading( false )
     }, [ userData ] )
 
-    return <div className='flex flex-col'>
+    return <>
         { isLoading ? (
             <FontAwesomeIcon icon={ faFan } className='animate-spin' />
         ) : (
             <>
-                <div className='new-post-card form'>
-                    <h1 className='title2'>Ajouter un nouveau message </h1>
+                <div className='new-post-card'>
+                    <h1 className='text-md font-semibold mb-2 sm:title2'>Ajouter un nouveau message </h1>
                     <input className='input mb-2 shadow-md'
                         type='text'
                         id='title'
@@ -87,7 +87,7 @@ const CreatePostForm = () => {
                                     { timestampParser( Date.now() ) }
                                 </span>
                             </div>
-                            <div className='mx-3 my-2'>
+                            <div className='mx-1 my-2 sm:mx-3'>
                                 <p className='mb-4'>
                                     { message }
                                 </p>
@@ -110,17 +110,17 @@ const CreatePostForm = () => {
                                 onChange={ ( e ) => handlePicture( e ) }
                             />
                         </div>
-                        <div>
+                        <div className='flex flex-col sm:flex-row'>
                             { title || message || postImg ? (
-                                <button className='btn-delete my-0 mx-2' onClick={ cancelPost }>Annuler</button>
+                                <button className='btn-delete my-0 mx-0.5 sm:mx-2' onClick={ cancelPost }>Annuler</button>
                             ) : null }
-                            <button className='btn btn-hover my-0 mx-2' onClick={ handlePost }>Envoyer</button>
+                            <button className='btn btn-hover my-0 mx-0.5 sm:mx-2' onClick={ handlePost }>Envoyer</button>
                         </div>
                     </div>
                 </div>
             </>
         ) }
-    </div>
+    </>
 }
 
 export default CreatePostForm

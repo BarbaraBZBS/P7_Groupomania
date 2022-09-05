@@ -5,8 +5,8 @@ import { NavLink } from 'react-router-dom'
 
 const LeftNav = () => {
     return <aside className='w-20 flex flex-col pb-6 p-3 asbolute'>
-        <div className='icons fixed z-10'>
-            <div className='icons-bis absolute left-3 pt-20'>
+        <div className='fixed z-10'>
+            <div className='absolute pt-20 left-[-10px] sm:left-0 lg:left-3'>
                 <div className='h-5'>
                     <NavLink to='/' className={ ( navData ) => navData.isActive ? 'leftnav-active' : '' }>
                         <FontAwesomeIcon icon={ faHouse } className='leftnav-icon py-2' />

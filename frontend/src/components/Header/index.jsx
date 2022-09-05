@@ -11,21 +11,21 @@ function Header() {
     const uid = useContext( UidContext )
     const userData = useSelector( ( state ) => state.userReducer )
 
-    return <header className='bg-white p-3 w-full'>
-        <nav className='flex justify-between'>
+    return <header className='bg-white p-0 sm:p-3 w-full'>
+        <nav className='flex flex-col items-center sm:flex-row sm:justify-between'>
             <div>
                 <div>
                     <NavLink to='/'>
-                        <img src={ Logo } alt='Logo Groupomania' className='flex h-32 object-cover w-64' />
+                        <img src={ Logo } alt='Logo Groupomania' className='flex h-32 mr-2 pr-2 object-cover w-64' />
                     </NavLink>
                 </div>
             </div>
             { uid ? (
-                <ul className='li flex items-center m-7'>
+                <ul className='li flex items-center m-2 sm:m-7'>
                     <li></li>
                     <li >
                         <NavLink to='/profil'>
-                            <h5 className='mr-12 font-semibold'>Bienvenue { userData.username }</h5>
+                            <h5 className='text-lg mr-3 mb-2 sm:my-0 sm:mr-12 font-semibold'>Bienvenue { userData.username }</h5>
                         </NavLink>
                     </li>
                     <Logout />
