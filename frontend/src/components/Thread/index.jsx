@@ -30,23 +30,23 @@ const Thread = () => {
         return () => window.removeEventListener( 'scroll', loadMore )
     }, [ loadPost, dispatch, count ] )
 
-    return <div className='thread-container'>
+    return <section aria-label='thread section' className='thread-container'>
         { userData.role === 'admin' ? (
-            <ul>
+            <div>
                 { !isEmpty( posts[ 0 ] ) &&
                     posts.map( ( post ) => {
                         return <CardAdmin post={ post } key={ post.id } />
                     } ) }
-            </ul>
+            </div>
         ) : (
-            <ul>
+            <div>
                 { !isEmpty( posts[ 0 ] ) &&
                     posts.map( ( post ) => {
                         return <Card post={ post } key={ post.id } />
                     } ) }
-            </ul>
+            </div>
         ) }
-    </div >
+    </section >
 }
 
 export default Thread

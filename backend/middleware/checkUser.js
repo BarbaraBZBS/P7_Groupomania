@@ -10,9 +10,6 @@ module.exports = ( req, res, next ) => {
                 next();
             } else {
                 let user = await User.findOne( { where: { id: decodedToken.userId } } );
-                //console.log( 'user id?:', user.id );
-                console.log( res.locals );
-                console.log( decodedToken )
                 res.locals.user = user;
                 next();
             }

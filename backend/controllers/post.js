@@ -46,13 +46,18 @@ exports.createPost = async ( req, res, next ) => {
     try {
         let imagePath = '';
         if ( req.file ) {
-            imagePath = `${ req.protocol }://${ req.get( "host" ) }/images/${ req.file.filename }`;
-            await Post.create( {
-                title: req.body.title,
-                content: req.body.content,
-                image: imagePath,
-                userId: req.body.userId
-            } )
+            if ( req.file.mimetype !== 'image/jpg' && req.file.mimetype !== 'image/jpeg' && req.file.mimetype !== 'image/png' ) {
+                return res.status( 400 ).json( { message: "Mauvais type d'image !" } )
+            }
+            else {
+                imagePath = `${ req.protocol }://${ req.get( "host" ) }/images/${ req.file.filename }`;
+                await Post.create( {
+                    title: req.body.title,
+                    content: req.body.content,
+                    image: imagePath,
+                    userId: req.body.userId
+                } )
+            }
         }
         else {
             await Post.create( {

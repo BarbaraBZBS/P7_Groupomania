@@ -8,7 +8,7 @@ import { legacy_createStore as createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 import rootReducer from './reducers'
-// dev-tools  - must b removed for dev: redux-devtools-extension, logger
+// dev-tools  - must b removed for dev : redux-devtools-extension, logger
 import logger from 'redux-logger'
 import { getUsers } from './actions/usersActions'
 import { getPosts } from './actions/postActions'

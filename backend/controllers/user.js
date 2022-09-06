@@ -15,7 +15,7 @@ exports.signup = ( req, res, next ) => {
     }
 
     if ( req.body.username.length >= 11 || req.body.username.length <= 4 ) {
-        return res.status( 400 ).json( { message: 'nom utlisateur trop court ou trop long (5 à 10 charactères autorisés)' } )
+        return res.status( 400 ).json( { message: 'nom utilisateur trop court ou trop long (5 à 10 charactères autorisés)' } )
     }
 
     if ( !EMAIL_REGEX.test( req.body.email ) ) {
@@ -50,15 +50,10 @@ exports.signup = ( req, res, next ) => {
                             res.send( { message: 'Utilisateur enregistré avec succès' } )
                         } )
                     }
-                    // res.status( 201 ).json( { message: 'user created' } );
-                    // console.log( 'success: user created', req.body );
                 } )
                 .catch( error => {
                     res.status( 500 ).send( { message: error.message } )
                 } )
-
-            //     .catch( error => res.status( 400 ).json( { error } ) );
-            // console.log( 'error: user not created', res.statusCode );
         } )
         .catch( error => res.status( 400 ).json( { error } ) )
 };
@@ -79,15 +74,8 @@ exports.login = async ( req, res, next ) => {
                     return res.status( 401 ).json( { message: 'identifiant(s) incorrect(s)' } );
                 }
 
-                const refreshToken = jwt.sign(
-                    { userId: user.id },
-                    process.env.REFRESH_TOKEN_SECRET,
-                    { expiresIn: '10s' }
-                );
-
                 const token = jwt.sign(
-                    { userId: user.id, role: user.role }, //
-                    //{ role: user.role },
+                    { userId: user.id, role: user.role },
                     process.env.TOKEN_SECRET,
                     { expiresIn: maxAge }
                 )
@@ -97,16 +85,10 @@ exports.login = async ( req, res, next ) => {
                     userId: user.id,
                     role: user.role,
                     token: jwt.sign(
-                        { userId: user.id, role: user.role }, //
-                        //{ role: user.role },
+                        { userId: user.id, role: user.role },
                         process.env.TOKEN_SECRET,
                         { expiresIn: maxAge }
                     ),
-                    // refreshToken: jwt.sign(
-                    //     { userId: user.id },
-                    //     process.env.REFRESH_TOKEN_SECRET,
-                    //     { expiresIn: '1d' }
-                    // )
                 } );
                 console.log( user.role )
 
@@ -114,13 +96,6 @@ exports.login = async ( req, res, next ) => {
                 user.getRoles().then( roles => {
                     for ( let i = 0; i < roles.length; i++ ) {
                         authorities.push( "ROLE_" + roles[ i ].name.toUpperCase() );
-                        // res.status( 200 ).json( {
-                        //     id: user.id,
-                        //     username: user.username,
-                        //     email: user.email,
-                        //     roles: authorities,
-                        //     token: token
-                        // } );
                     }
                     console.log( authorities )
                 } );
@@ -137,15 +112,12 @@ exports.logout = async ( req, res ) => {
     const cookies = req.cookies;
     if ( !cookies?.jwt ) return res.sendStatus( 204 ); //No content
     const token = cookies.jwt;
-    // Is refreshToken in db?
     const user = await User.findOne( { token } )
     if ( !user ) {
         res.clearCookie( 'jwt', { httpOnly: true, sameSite: 'None', secure: true } );
         return res.sendStatus( 204 );
     }
-    // Delete refreshToken in db
     user.update( { token: '' } )
-    //user.refreshToken = '';
     console.log( token );
     res.clearCookie( 'jwt', { httpOnly: true, sameSite: 'None', secure: true } );
     res.sendStatus( 204 );
@@ -177,25 +149,6 @@ exports.getOneUser = async ( req, res, next ) => {
         .catch( error => res.status( 400 ).json( { error } ) )
 }
 
-//disabling auth for redux to pass through
-// exports.getOneUser = async ( req, res, next ) => {
-//     await User.findByPk( req.params.id )
-//         .then( ( user ) => {
-//             if ( user ) {
-//                 if ( user.id != req.auth.userId ) {
-//                     res.status( 401 ).json( { message: 'Unauthorized' } )
-//                 }
-//                 else {
-//                     res.status( 200 ).json( user )
-//                 }
-//             }
-//             else {
-//                 res.status( 404 ).json( { message: 'User not found' } )
-//             }
-//         } )
-//         .catch( error => res.status( 400 ).json( { error } ) )
-// }
-
 exports.updateUser = async ( req, res, next ) => {
     await User.findByPk( req.params.id )
         .then( ( user ) => {
@@ -208,34 +161,11 @@ exports.updateUser = async ( req, res, next ) => {
                         console.log( req.body.username )
                         res.status( 200 ).json( { message: 'Success: username modified !' } )
                     } )
-                    .catch( error => res.status( 400 ).json( { error } ) )
+                    .catch( error => res.status( 409 ).json( { message: 'Nom déja utilisé !' } ) )
             }
         } )
         .catch( error => res.status( 400 ).json( { error } ) )
 }
-
-// disabling auth for redux to pass through
-// exports.updateUser = async ( req, res, next ) => {
-//     await User.findByPk( req.params.id )
-//         .then( ( user ) => {
-//             if ( !user ) {
-//                 res.status( 404 ).json( { message: 'User not found' } )
-//             }
-//             else {
-//                 if ( user.id != req.auth.userId ) {
-//                     res.status( 401 ).json( { message: 'Unauthorized' } )
-//                 }
-//                 else {
-//                     user.update( { username: req.body.username } )
-//                         .then( () => {
-//                             res.status( 200 ).json( { message: 'Success: username modified !' } )
-//                         } )
-//                         .catch( error => res.status( 400 ).json( { error } ) )
-//                 }
-//             }
-//         } )
-//         .catch( error => res.status( 400 ).json( { error } ) )
-// }
 
 exports.deleteUser = async ( req, res, next ) => {
     await User.findByPk( req.params.id )
@@ -251,24 +181,3 @@ exports.deleteUser = async ( req, res, next ) => {
         } )
         .catch( error => res.status( 400 ).json( { error } ) )
 }
-
-//disabling auth for redux to pass through
-// exports.deleteUser = async ( req, res, next ) => {
-//     await User.findByPk( req.params.id )
-//         .then( ( user ) => {
-//             if ( !user ) {
-//                 res.status( 404 ).json( { message: 'User not found' } )
-//             }
-//             else {
-//                 if ( user.id != req.auth.userId ) {
-//                     res.status( 401 ).json( { message: 'Unauthorized' } )
-//                 }
-//                 else {
-//                     user.destroy()
-//                         .then( () => res.status( 200 ).json( { message: 'Success: user deleted !' } ) )
-//                         .catch( error => res.status( 400 ).json( { error } ) )
-//                 }
-//             }
-//         } )
-//         .catch( error => res.status( 400 ).json( { error } ) )
-// }

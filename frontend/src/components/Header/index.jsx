@@ -21,9 +21,8 @@ function Header() {
                 </div>
             </div>
             { uid ? (
-                <ul className='li flex items-center m-2 sm:m-7'>
-                    <li></li>
-                    <li >
+                <ul className='li flex items-center m-2 sm:m-7' aria-label='navigation links'>
+                    <li>
                         <NavLink to='/profil'>
                             <h5 className='text-lg mr-3 mb-2 sm:my-0 sm:mr-12 font-semibold'>Bienvenue { userData.username }</h5>
                         </NavLink>
@@ -31,11 +30,10 @@ function Header() {
                     <Logout />
                 </ul>
             ) : (
-                <ul className='li flex items-center m-7'>
-                    <li></li>
+                <ul className='li flex items-center m-7' aria-label='navigation links'>
                     <li>
                         <NavLink to='/profil'>
-                            <FontAwesomeIcon icon={ faRightToBracket } className='icon' />
+                            <FontAwesomeIcon icon={ faRightToBracket } className='icon' aria-label='connection icon' />
                         </NavLink>
                     </li>
                 </ul>

@@ -1,6 +1,5 @@
 const express = require( 'express' );
 const router = express.Router();
-const auth = require( '../middleware/auth' );
 const multer = require( '../middleware/multer-config' );
 const postCtrl = require( '../controllers/post' );
 
@@ -14,6 +13,6 @@ router.put( '/:id', multer, postCtrl.modifyPost );
 
 router.delete( '/:id', postCtrl.deletePost );
 
-router.post( '/:id/like', auth, postCtrl.likeStatusPost );
+router.post( '/:id/like', postCtrl.likeStatusPost );
 
 module.exports = router;

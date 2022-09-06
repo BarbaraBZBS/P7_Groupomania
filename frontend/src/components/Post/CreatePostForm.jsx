@@ -6,7 +6,6 @@ import { isEmpty, timestampParser } from '../../utils'
 import { useDispatch } from 'react-redux'
 import { addPost, getPosts } from '../../actions/postActions'
 
-
 const CreatePostForm = () => {
     const [ isLoading, setIsLoading ] = useState( true )
     const [ title, setTitle ] = useState( '' )
@@ -15,30 +14,36 @@ const CreatePostForm = () => {
     const [ file, setFile ] = useState()
 
     const userData = useSelector( ( state ) => state.userReducer )
+    const error = useSelector( ( state ) => state.errorReducer.postError )
     const dispatch = useDispatch()
 
     const handlePicture = ( e ) => {
         setPostImg( URL.createObjectURL( e.target.files[ 0 ] ) )
-        console.log( e.target.files[ 0 ] )
+        // console.log( e.target.files[ 0 ] )
         setFile( ( e.target.files[ 0 ] ) )
-        console.log( 'file:', file )
     }
 
     const handlePost = async () => {
-        if ( message ) {
-            const data = new FormData()
+        try {
 
-            data.append( 'title', title )
-            data.append( 'content', message )
-            if ( file ) data.append( 'image', file )
-            data.append( 'userId', userData.id )
-            console.log( data )
+            if ( message ) {
+                const data = new FormData()
 
-            await dispatch( addPost( data ) )
-            dispatch( getPosts() )
-            cancelPost()
-        } else {
-            alert( 'Veuillez entrer un message !' )
+                data.append( 'title', title )
+                data.append( 'content', message )
+                if ( file ) data.append( 'image', file )
+                data.append( 'userId', userData.id )
+                // console.log( data )
+
+                await dispatch( addPost( data ) )
+                dispatch( getPosts() )
+                cancelPost()
+            } else {
+                alert( 'Veuillez entrer un message !' )
+            }
+        }
+        catch ( error ) {
+            console.log( error )
         }
     }
 
@@ -57,8 +62,8 @@ const CreatePostForm = () => {
         { isLoading ? (
             <FontAwesomeIcon icon={ faFan } className='animate-spin' />
         ) : (
-            <>
-                <div className='new-post-card'>
+            <section>
+                <div aria-label='create new post' role='form' tabindex="0" className='new-post-card'>
                     <h1 className='text-md font-semibold mb-2 sm:title2'>Ajouter un nouveau message </h1>
                     <input className='input mb-2 shadow-md'
                         type='text'
@@ -110,6 +115,8 @@ const CreatePostForm = () => {
                                 onChange={ ( e ) => handlePicture( e ) }
                             />
                         </div>
+                        { !isEmpty( error ) && <p className='text-xl font-semibold text-appred'
+                            aria-live='assertive'>{ error }</p> }
                         <div className='flex flex-col sm:flex-row'>
                             { title || message || postImg ? (
                                 <button className='btn-delete my-0 mx-0.5 sm:mx-2' onClick={ cancelPost }>Annuler</button>
@@ -118,7 +125,7 @@ const CreatePostForm = () => {
                         </div>
                     </div>
                 </div>
-            </>
+            </section>
         ) }
     </>
 }

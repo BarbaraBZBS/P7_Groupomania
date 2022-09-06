@@ -5,6 +5,7 @@ export const ADD_POST = 'ADD_POST'
 export const UPDATE_POST_TITLE = 'UPDATE_POST_TITLE'
 export const UPDATE_POST_CONTENT = 'UPDATE_POST_CONTENT'
 export const DELETE_POST = 'DELETE_POST'
+export const GET_POST_ERROR = 'GET_POST_ERROR'
 
 export const getPosts = ( num ) => {
     return ( dispatch ) => {
@@ -22,14 +23,16 @@ export const addPost = ( data ) => {
     return ( dispatch ) => {
         return axios
             .post( '/api/posts', ( data ) )
+            .then( ( res ) => {
+                // console.log( res.data )
+                dispatch( { type: GET_POST_ERROR, payload: '' } )
+            } )
+            .catch( error => {
+                console.log( error )
+                dispatch( { type: GET_POST_ERROR, payload: error.response.data.message } )
+            } )
     }
 }
-// export const addPost = ( data ) => {
-//     return ( dispatch ) => {
-//         return axios
-//             .post( '/api/posts', ( data ) )
-//     }
-// }
 
 export const updatePostTitle = ( postId, title ) => {
     return ( dispatch ) => {

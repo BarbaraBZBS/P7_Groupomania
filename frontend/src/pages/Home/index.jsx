@@ -9,13 +9,13 @@ function Home() {
     const uid = useContext( UidContext )
 
     return <>
-        { uid ? ( <section>
+        { uid ? ( <main>
             <LeftNav />
             <div className='flex justify-center items-center flex-col text-center p-5'>
                 <CreatePostForm />
                 <Thread />
             </div>
-        </section>
+        </main>
         ) : (
             <Log login={ true } signup={ false } />
         ) }

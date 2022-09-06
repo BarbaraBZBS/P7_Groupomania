@@ -39,24 +39,23 @@ function App() {
     }, [ uid, dispatch ] )
 
     return <>
-        {
-            loading ?
-                <div className='loader-spinner'>
-                    <BallTriangle
-                        height={ 200 }
-                        width={ 200 }
-                        radius={ 5 }
-                        color="#4E5166"
-                        ariaLabel="ball-triangle-loading"
-                        wrapperClass={ {} }
-                        wrapperStyle=""
-                        visible={ true }
-                    />
-                </div>
-                :
-                <UidContext.Provider value={ uid }>
-                    <Router />
-                </UidContext.Provider>
+        { loading ?
+            <div className='loader-spinner'>
+                <BallTriangle
+                    height={ 200 }
+                    width={ 200 }
+                    radius={ 5 }
+                    color="#4E5166"
+                    ariaLabel="ball-triangle-loading"
+                    wrapperClass={ {} }
+                    wrapperStyle=""
+                    visible={ true }
+                />
+            </div>
+            :
+            <UidContext.Provider value={ uid }>
+                <Router />
+            </UidContext.Provider>
         }
     </>
 }

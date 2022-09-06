@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 
 const LeftNav = () => {
     return <aside className='w-20 flex flex-col pb-6 p-3 asbolute'>
-        <div className='fixed z-10'>
+        <nav className='fixed z-10'>
             <div className='absolute pt-20 left-[-10px] sm:left-0 lg:left-3'>
                 <div className='h-5'>
                     <NavLink to='/' className={ ( navData ) => navData.isActive ? 'leftnav-active' : '' }>
@@ -21,7 +21,7 @@ const LeftNav = () => {
 
                 </div>
             </div>
-        </div>
+        </nav>
     </aside>
 }
 

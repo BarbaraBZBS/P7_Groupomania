@@ -37,8 +37,8 @@ const CardAdmin = ( { post } ) => {
         !isEmpty( usersData[ 0 ] ) && setIsLoading( false )
     }, [ usersData ] )
 
-    return <div className='post-card'>
-        <li className='li' key={ post.id }>
+    return <div aria-label='post card' role='region' tabindex="0" className='post-card'>
+        <div key={ post.id }>
             { isLoading ? (
                 <FontAwesomeIcon icon={ faFan } className='bg-transparent text-appstone animate-spin' />
             ) : (
@@ -59,9 +59,10 @@ const CardAdmin = ( { post } ) => {
                                 </div>
                             </>
                         ) }
-                        <div onClick={ () => setIsTitleEditable( !isTitleEditable ) }>
+                        <button onClick={ () => setIsTitleEditable( !isTitleEditable ) }>
+                            <span class="sr-only">Edit title icon</span>
                             <FontAwesomeIcon icon={ faPenToSquare } className='text-violet-900 cursor-pointer' />
-                        </div>
+                        </button>
                         { isTitleEditable && (
                             <div className='ml-2'>
                                 <input className='input m-0 p-0 shadow-md'
@@ -100,21 +101,23 @@ const CardAdmin = ( { post } ) => {
                             </div>
                         ) }
                         <div>
-                            { post.image && <img src={ post.image } alt='Post' className='card-img' /> }
+                            { post.image && <img src={ post.image } alt='Posted file' className='card-img' /> }
                         </div>
                     </div>
                     <div className='flex flex-row justify-end'>
-                        <div className='m-1' onClick={ () => setIsContentEditable( !isContentEditable ) }>
+                        <button className='m-1' onClick={ () => setIsContentEditable( !isContentEditable ) }>
+                            <span class="sr-only">Edit message icon</span>
                             <FontAwesomeIcon icon={ faFilePen } className='text-violet-900 cursor-pointer' />
-                        </div>
+                        </button>
                         <DeletePost id={ post.id } />
                     </div>
-                    <div>
+                    <button>
+                        <span class="sr-only">Like icon</span>
                         <FontAwesomeIcon icon={ faHeart } className='icon mb-2' />
-                    </div>
+                    </button>
                 </>
             ) }
-        </li>
+        </div>
     </div >
 }
 

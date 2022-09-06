@@ -1,10 +1,6 @@
 const User = require( '../models/user' );
-const Role = require( '../models/role' );
 const dotenv = require( 'dotenv' );
 dotenv.config();
-//const db = require( "../models" );
-//const ROLES = db.ROLES;
-//const User = db.user;
 
 checkDuplicateUsernameOrEmail = ( req, res, next ) => {
     // Username
@@ -46,7 +42,6 @@ checkRolesExisted = ( req, res, next ) => {
             }
         }
     }
-
     next();
 };
 const verifySignUp = {

@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import LeftNav from '../LeftNav'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateName } from '../../actions/userActions'
+import { isEmpty } from '../../utils'
 import axios from '../../api/axios'
 import cookie from 'js-cookie'
 
 
 const UpdateProfil = () => {
     const userData = useSelector( ( state ) => state.userReducer )
+    const error = useSelector( ( state ) => state.errorReducer.userError )
     const [ username, setUsername ] = useState( '' )
     const [ updateForm, setUpdateForm ] = useState( false )
     const dispatch = useDispatch()
@@ -46,20 +48,22 @@ const UpdateProfil = () => {
         }
     }
 
-    return <section className='pb-6'>
+    return <main className='pb-6'>
         <LeftNav />
-        <div className='userupd-container'>
+        <section className='userupd-container'>
             <h1 className='title2 sm:title1 sm:uppercase'> Profil de { userData.username }</h1>
             <p> { userData.email }</p>
             <br />
             <div>
-                <div className='userupd-card border-appstone'>
+                <div className='userupd-card border-appstone' aria-label='modify name' role='region' tabindex="0">
                     <h2 className='text-lg font-semibold sm:title2'>Modification du nom d'utilisateur</h2>
                     { updateForm === false && (
                         <>
                             <p onClick={ () => setUpdateForm( !updateForm ) }>
                                 { userData.username }
                             </p>
+                            { !isEmpty( error ) && <p className='text-xl font-semibold text-appred mt-2'
+                                aria-live='assertive'>{ error }</p> }
                             <button className='btn btn-hover' onClick={ () => setUpdateForm( !updateForm ) }>
                                 Modifier
                             </button>
@@ -78,14 +82,14 @@ const UpdateProfil = () => {
                     ) }
                 </div>
                 <br />
-                <div className='userupd-card border-appred'>
+                <div className='userupd-card border-appred' aria-label='delete account' role='region' tabindex="0">
                     <h2 className='text-lg font-semibold sm:title2'>Suppression du compte</h2>
                     <p>Vous avez la possiblité de supprimer votre compte</p>
                     <button className='btn-delete sm:w-64' onClick={ HandleDelete }>Supprimer mon compte</button>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 }
 
 export default UpdateProfil
