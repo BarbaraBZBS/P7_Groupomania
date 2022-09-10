@@ -1,19 +1,23 @@
 const express = require( 'express' );
 const helmet = require( 'helmet' );
 const rateLimit = require( 'express-rate-limit' );
+const path = require( 'path' );
+const cors = require( 'cors' );
+const cookieParser = require( 'cookie-parser' );
+//routes
 const userRoutes = require( './routes/user' );
 const postRoutes = require( './routes/post' );
+//models
 const User = require( './models/user' );
 const Post = require( './models/post' );
 const Role = require( './models/role' );
 const User_Roles = require( './models/user_roles' );
 const Like = require( './models/like' );
-const path = require( 'path' );
-const cors = require( 'cors' );
+//middleware
 const errorHandler = require( './middleware/errorHandler' );
-const cookieParser = require( 'cookie-parser' );
 const requireAuth = require( './middleware/requireAuth' );
 const checkUser = require( './middleware/checkUser' );
+
 const app = express();
 
 //cors options for headers
@@ -35,7 +39,7 @@ app.use( cookieParser() );
 //security - requests limiter and headers settings
 const limiter = rateLimit( {
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 400, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    max: 400, // Limit each IP to 400 requests per `window` (here, per 15 minutes)
     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 } );
