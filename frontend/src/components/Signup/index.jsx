@@ -185,7 +185,7 @@ function Signup() {
                         (au moins un nombre et une lettre)
                     </p>
                     <br />
-                    <button className={ !validName || !validPwd || !validEmail ? 'self-center disabled' : 'btn btn:hover self-center' }>
+                    <button className={ !validName || !validPwd || !validEmail ? 'self-center disabled' : 'btn btn:hover self-center mt-3' }>
                         Valider</button>
                 </form>
             </section>

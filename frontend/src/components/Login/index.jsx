@@ -75,7 +75,7 @@ function Login() {
                 required
             />
             <br />
-            <button className='btn btn-hover w-40 self-center'>Se Connecter</button>
+            <button className='btn btn-hover w-40 self-center mt-3'>Se Connecter</button>
         </form>
     </section>
 }
