@@ -1,124 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,400;0,700;0,900;1,100&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    font-family: 'Nunito', sans-serif;
-    font-size: 22px;
-    color: #fff;
-}
-
-body {
-    min-height: 100vh;
-    background-color: dodgerblue;
-}
-
-.App {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 1rem 0.5rem;
-}
-
-section {
-    width: 100%;
-    max-width: 420px;
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 1rem;
-    border-radius: 15px;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    flex-grow: 1;
-    padding-bottom: 1rem;
-}
-
-a,
-a:visited {
-    color: #fff;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="email"],
-button,
-textarea {
-    font-family: 'Nunito', sans-serif;
-    font-size: 22px;
-    padding: 0.25rem;
-    border-radius: 0.5rem;
-}
-
-label,
-button {
-    margin-top: 1rem;
-}
-
-button {
-    padding: 0.5rem;
-}
-
-.instructions {
-    font-size: 0.75rem;
-    border-radius: 0.5rem;
-    background: #000;
-    color: #fff;
-    padding: 0.25rem;
-    position: relative;
-    bottom: -10px;
-}
-
-.instructions>svg {
-    margin-right: 0.25rem;
-}
-
-.offscreen {
-    position: absolute;
-    left: -9999px;
-}
-
-.hide {
-    display: none;
-}
-
-.valid {
-    color: limegreen;
-    margin-left: 0.25rem;
-}
-
-.invalid {
-    color: red;
-    margin-left: 0.25rem;
-}
-
-.errmsg {
-    background-color: lightpink;
-    color: firebrick;
-    font-weight: bold;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.line {
-    display: inline-block;
-}
-
-.flexGrow {
-    flex-grow: 1;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
+@layer components {
+    .log-container {
+        @apply flex flex-col border-2 border-apppink rounded-xl px-8 bg-apppinklight shadow-xl py-3 w-3/4 sm:px-10 sm:py-8 sm:w-[531px] sm:flex-row md:px-10 md:py-10 md:w-[539px] md:flex-row lg:px-12 lg:py-20 lg:w-7/12 lg:flex-row
+    }
+    .log {
+        @apply flex flex-col justify-center items-center mt-8 mb-12 p-3 sm:ml-0 sm:mr-10 sm:my-10 md:ml-0 md:mr-12 md:my-12 lg:my-14 lg:ml-[8%] lg:mr-[14%] lg:pr-[20px]
+    }
+    .btn {
+        @apply w-32 p-2 border-2 border-white bg-indigo-500 text-appblck rounded-xl active:bg-appstone mb-2 cursor-pointer
+    }
+    .btn-hover {
+        @apply hover:bg-indigo-800 hover:text-white
+    }
+    .btn-active {
+        @apply w-32 p-2 border-2 mb-3 border-appstone bg-appstone  text-white rounded-xl
+    }
+    .btn-delete {
+        @apply w-32 p-2 border-2 border-appred bg-appred text-white rounded-xl hover:bg-red-800 active:bg-appstone mt-4 cursor-pointer
+    }
+    .li {
+        @apply list-none
+    }
+    .app {
+        @apply flex justify-center items-center min-h-screen py-4 px-2
+    }
+    .form {
+        @apply flex flex-col justify-evenly flex-grow pb-4
+    }
+    .label {
+        @apply mt-4 leading-9
+    }
+    .errMsg {
+        @apply pt-2 pb-4 mb-6 font-semibold text-2xl text-appred bg-stone-900 rounded text-center
+    }
+    .offscreen {
+        @apply absolute -left-96
+    }
+    .input {
+        @apply p-1 rounded-lg
+    }
+    .valid {
+        @apply ml-1 text-green-600
+    }
+    .invalid {
+        @apply ml-1 text-appred
+    }
+    .instructions {
+        @apply text-sm rounded-lg bg-white p-1 relative top-2
+    }
+    .success {
+        @apply px-2 pt-2 pb-4 mb-6 font-semibold text-2xl text-green-600 bg-white rounded-lg text-center
+    }
+    .disabled {
+        @apply w-32 p-2 border-2 border-white bg-indigo-500 text-appblck rounded-xl opacity-50 mt-4 cursor-not-allowed
+    }
+    .title1 {
+        @apply text-3xl font-semibold mb-6
+    }
+    .title2 {
+        @apply text-2xl font-semibold mb-4
+    }
+    .icon {
+        @apply cursor-pointer text-xl sm:text-2xl
+    }
+    .userupd-container {
+        @apply flex justify-center items-center flex-col text-center
+    }
+    .userupd-card {
+        @apply border-2 rounded-lg p-3 w-3/4 m-auto shadow-md bg-violet-200 sm:w-[490px]
+    }
+    .leftnav-icon {
+        @apply text-lg sm:text-3xl text-appstone hover:text-appred
+    }
+    .leftnav-active {
+        @apply bg-transparent rounded-2xl border-l-4 pl-2 border-l-appred absolute animate-scale
+    }
+    .new-post-card {
+        @apply flex flex-col bg-appoppink py-4 m-auto px-2 sm:px-10 mb-12 rounded-2xl shadow-lg w-[85%] min-w-[209px] max-w-[510px] sm:min-w-[482px] sm:max-w-[482px] md:min-w-[590px] md:max-w-[590px] lg:min-w-[700px] lg:max-w-3xl
+    }
+    .new-post-overview {
+        @apply bg-white border-2 border-appstone rounded-2xl mt-2 mb-3 shadow-md p-1 text-sm sm:text-xl
+    }
+    .card-img {
+        @apply object-cover flex justify-center self-center items-center rounded-xl m-auto h-60 max-w-[95%] sm:h-80 sm:max-w-[430px] md:max-w-[530px] lg:max-w-[690px]
+    }
+    .post-card {
+        @apply bg-appsand border-2 border-gray-300 rounded-2xl mt-2 shadow-md mb-6 m-auto min-w-[212px] max-w-[80%] sm:max-w-[482px] md:max-w-[590px] lg:max-w-3xl
+    }
+    .card-header {
+        @apply flex flex-col sm:flex-row justify-evenly text-center
+    }
+    .loader-spinner {
+        @apply flex justify-center h-screen items-center m-auto z-[999]
+    }
 }

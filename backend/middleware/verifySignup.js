@@ -1,10 +1,6 @@
 const User = require( '../models/user' );
-const Role = require( '../models/role' );
 const dotenv = require( 'dotenv' );
 dotenv.config();
-//const db = require( "../models" );
-//const ROLES = db.ROLES;
-//const User = db.user;
 
 checkDuplicateUsernameOrEmail = ( req, res, next ) => {
     // Username
@@ -14,7 +10,7 @@ checkDuplicateUsernameOrEmail = ( req, res, next ) => {
         }
     } ).then( user => {
         if ( user ) {
-            res.status( 400 ).send( {
+            res.status( 409 ).send( {
                 message: "Failed! Username is already in use!"
             } );
             return;
@@ -26,7 +22,7 @@ checkDuplicateUsernameOrEmail = ( req, res, next ) => {
             }
         } ).then( user => {
             if ( user ) {
-                res.status( 400 ).send( {
+                res.status( 409 ).send( {
                     message: "Failed! Email is already in use!"
                 } );
                 return;
@@ -46,7 +42,6 @@ checkRolesExisted = ( req, res, next ) => {
             }
         }
     }
-
     next();
 };
 const verifySignUp = {

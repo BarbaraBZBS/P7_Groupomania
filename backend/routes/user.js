@@ -7,5 +7,14 @@ router.post( '/signup', verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp
 
 router.post( '/login', userCtrl.login );
 
+router.get( '/logout', userCtrl.logout );
+
+router.get( '/users', userCtrl.getAllUsers );
+
+router.get( '/user/:id', userCtrl.getOneUser );
+
+router.put( '/user/:id', userCtrl.updateUser );
+
+router.delete( '/user/:id', userCtrl.deleteUser );
 
 module.exports = router;

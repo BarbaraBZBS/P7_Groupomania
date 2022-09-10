@@ -1,0 +1,50 @@
+{
+    "extends": [
+        "react-app"
+    ],
+    "rules": {
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "never"
+        ],
+        "indent": [
+            "error",
+            4
+        ],
+        "no-multi-spaces": [
+            "error"
+        ],
+        "max-len": [
+            "error",
+            {
+                "code": 95,
+                "ignoreUrls": true,
+                "ignoreStrings": true
+            }
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "array-bracket-spacing": [
+            "error",
+            "always"
+        ],
+        "space-before-blocks": [
+            "error",
+            "always"
+        ],
+        "computed-property-spacing": [
+            "error",
+            "always"
+        ],
+        "space-in-parens": [
+            "error",
+            "always"
+        ]
+    }
+}

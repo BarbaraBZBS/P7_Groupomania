@@ -18,4 +18,4 @@ module.exports = sequelize.define( "user_roles", {
     }
 }, {
     timestamps: false
-} )
+} );

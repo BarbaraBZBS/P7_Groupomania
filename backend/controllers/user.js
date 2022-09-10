@@ -15,7 +15,7 @@ exports.signup = ( req, res, next ) => {
     }
 
     if ( req.body.username.length >= 11 || req.body.username.length <= 4 ) {
-        return res.status( 400 ).json( { message: 'nom utlisateur trop court ou trop long (5 à 10 charactères autorisés)' } )
+        return res.status( 400 ).json( { message: 'nom utilisateur trop court ou trop long (5 à 10 charactères autorisés)' } )
     }
 
     if ( !EMAIL_REGEX.test( req.body.email ) ) {
@@ -30,35 +30,37 @@ exports.signup = ( req, res, next ) => {
         .then( hash => {
             User.create( { username: req.body.username, email: req.body.email, password: hash } )
                 .then( user => {
-                    if ( req.body.roles ) {
-                        Role.findAll( { where: { name: req.body.roles } } )
-                            .then( roles => {
-                                user.setRoles( roles ).then( () => {
+                    if ( req.body.role ) {
+                        user.update( {
+                            role: req.body.role
+                        } )
+                        Role.findAll( { where: { name: req.body.role } } )
+                            .then( role => {
+                                user.setRoles( role ).then( () => {
                                     res.send( { message: 'Utilisateur enregistré avec succès' } )
                                 } );
                             } );
                     }
                     else {
                         //user role 1
+                        user.update( {
+                            role: "user"
+                        } )
                         user.setRoles( [ 1 ] ).then( () => {
                             res.send( { message: 'Utilisateur enregistré avec succès' } )
                         } )
                     }
-                    // res.status( 201 ).json( { message: 'user created' } );
-                    // console.log( 'success: user created', req.body );
                 } )
                 .catch( error => {
                     res.status( 500 ).send( { message: error.message } )
                 } )
-
-            //     .catch( error => res.status( 400 ).json( { error } ) );
-            // console.log( 'error: user not created', res.statusCode );
         } )
         .catch( error => res.status( 400 ).json( { error } ) )
 };
 
 
 exports.login = async ( req, res, next ) => {
+    const maxAge = 3 * 24 * 60 * 60 * 1000;
     try {
         const user = await User.findOne( { where: { email: req.body.email } } )
         // console.log( req.body.email )
@@ -71,25 +73,29 @@ exports.login = async ( req, res, next ) => {
                 if ( !valid ) {
                     return res.status( 401 ).json( { message: 'identifiant(s) incorrect(s)' } );
                 }
+
+                const token = jwt.sign(
+                    { userId: user.id, role: user.role },
+                    process.env.TOKEN_SECRET,
+                    { expiresIn: maxAge }
+                )
+                res.cookie( 'jwt', token, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 } )
+
                 res.status( 200 ).json( {
                     userId: user.id,
+                    role: user.role,
                     token: jwt.sign(
-                        { userId: user.id },
+                        { userId: user.id, role: user.role },
                         process.env.TOKEN_SECRET,
-                        { expiresIn: '36h' }
-                    )
+                        { expiresIn: maxAge }
+                    ),
                 } );
+                console.log( user.role )
+
                 const authorities = [];
                 user.getRoles().then( roles => {
                     for ( let i = 0; i < roles.length; i++ ) {
                         authorities.push( "ROLE_" + roles[ i ].name.toUpperCase() );
-                        // res.status( 200 ).json( {
-                        // id: user.id,
-                        // username: user.username,
-                        // email: user.email,
-                        // roles: authorities,
-                        // //token: token
-                        // } );
                     }
                     console.log( authorities )
                 } );
@@ -100,3 +106,78 @@ exports.login = async ( req, res, next ) => {
         res.status( 500 ).json( { error } );
     }
 };
+
+exports.logout = async ( req, res ) => {
+    // On client, also delete the accessToken
+    const cookies = req.cookies;
+    if ( !cookies?.jwt ) return res.sendStatus( 204 ); //No content
+    const token = cookies.jwt;
+    const user = await User.findOne( { token } )
+    if ( !user ) {
+        res.clearCookie( 'jwt', { httpOnly: true, sameSite: 'None', secure: true } );
+        return res.sendStatus( 204 );
+    }
+    user.update( { token: '' } )
+    console.log( token );
+    res.clearCookie( 'jwt', { httpOnly: true, sameSite: 'None', secure: true } );
+    res.sendStatus( 204 );
+};
+
+exports.getAllUsers = ( req, res, next ) => {
+    User.findAll()
+        .then( ( users ) => {
+            if ( users ) {
+                res.status( 200 ).json( users )
+            }
+            else {
+                res.status( 404 ).json( { message: 'No users found' } )
+            }
+        } )
+        .catch( error => res.status( 400 ).json( { error } ) )
+};
+
+exports.getOneUser = async ( req, res, next ) => {
+    await User.findByPk( req.params.id )
+        .then( ( user ) => {
+            if ( user ) {
+                res.status( 200 ).json( user )
+            }
+            else {
+                res.status( 404 ).json( { message: 'User not found' } )
+            }
+        } )
+        .catch( error => res.status( 400 ).json( { error } ) )
+}
+
+exports.updateUser = async ( req, res, next ) => {
+    await User.findByPk( req.params.id )
+        .then( ( user ) => {
+            if ( !user ) {
+                res.status( 404 ).json( { message: 'User not found' } )
+            }
+            else {
+                user.update( { username: req.body.username } )
+                    .then( () => {
+                        console.log( req.body.username )
+                        res.status( 200 ).json( { message: 'Success: username modified !' } )
+                    } )
+                    .catch( error => res.status( 409 ).json( { message: 'Nom déja utilisé !' } ) )
+            }
+        } )
+        .catch( error => res.status( 400 ).json( { error } ) )
+}
+
+exports.deleteUser = async ( req, res, next ) => {
+    await User.findByPk( req.params.id )
+        .then( ( user ) => {
+            if ( !user ) {
+                res.status( 404 ).json( { message: 'User not found' } )
+            }
+            else {
+                user.destroy()
+                    .then( () => res.status( 200 ).json( { message: 'Success: user deleted !' } ) )
+                    .catch( error => res.status( 400 ).json( { error } ) )
+            }
+        } )
+        .catch( error => res.status( 400 ).json( { error } ) )
+}

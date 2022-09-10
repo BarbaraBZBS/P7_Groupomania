@@ -24,4 +24,4 @@ module.exports = sequelize.define( "like", {
     }
 }, {
     timestamps: false
-} )
+} );

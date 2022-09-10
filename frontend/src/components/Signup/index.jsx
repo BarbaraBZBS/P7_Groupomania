@@ -1,11 +1,11 @@
 import { useRef, useState, useEffect } from 'react'
-import { faCheck, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTimes, faInfoCircle, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from '../../api/axios'
-import { Link } from 'react-router-dom'
+import Login from '../Login'
 
 // eslint-disable-next-line max-len
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ // eslint-disable-line
 const PASSWORD_REGEX = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,15})$/
 const USER_REGEX = /^[a-zA-Z-_]{5,10}$/
 const REGISTER_URL = '/api/auth/signup'
@@ -88,6 +88,8 @@ function Signup() {
         } catch ( err ) {
             if ( !err?.response ) {
                 setErrMsg( 'Pas de réponse du serveur' )
+            } else if ( err.response?.status === 409 ) {
+                setErrMsg( 'Nom/email déja utilisé(s)' )
             } else {
                 setErrMsg( 'Échec inscription' )
             }
@@ -97,24 +99,31 @@ function Signup() {
 
     return <>
         { success ? (
-            <section>
-                <h1>Success!</h1>
-                <p>
-                    <Link to="/">Se connecter</Link>
+            < div className='flex flex-col'>
+                <div className='success flex flex-col'>
+                    <h4>
+                        <FontAwesomeIcon icon={ faThumbsUp } />
+                        &nbsp; Inscription validée ! <br />
+                        Vous pouvez vous connecter.
+                    </h4>
+                </div>
 
-                </p>
-            </section>
+                <br />
+                <div>
+                    <Login />
+                </div>
+            </div>
         ) : (
             <section>
-                <p ref={ errRef } className={ errMsg ? 'errmsg' : 'offscreen' } aria-live="assertive">{ errMsg }</p>
-                <h1>Inscription</h1>
-                <form onSubmit={ handleSubmit }>
-                    <label htmlFor="username">
+                <p ref={ errRef } className={ errMsg ? 'errMsg' : 'offscreen' } aria-live="assertive">{ errMsg }</p>
+                <h1 className='title2 sm:title1 text-center'>Inscription</h1>
+                <form className='form' onSubmit={ handleSubmit }>
+                    <label htmlFor="username" className='label'>
                         Nom d'utilisateur :
-                        <FontAwesomeIcon icon={ faCheck } className={ validName ? 'valid' : 'hide' } />
-                        <FontAwesomeIcon icon={ faTimes } className={ validName || !username ? 'hide' : 'invalid' } />
+                        <FontAwesomeIcon icon={ faCheck } className={ validName ? 'valid' : 'hidden' } />
+                        <FontAwesomeIcon icon={ faTimes } className={ validName || !username ? 'hidden' : 'invalid' } />
                     </label>
-                    <input
+                    <input className='input'
                         type="text"
                         id="username"
                         ref={ userRef }
@@ -129,16 +138,16 @@ function Signup() {
                     />
                     <p id="uidnote" className={ userFocus && username && !validName ? 'instructions' : 'offscreen' }>
                         <FontAwesomeIcon icon={ faInfoCircle } />
-                        4 à 10 charactères.<br />
-                        Lettres, _ , - authorisés.
+                        &nbsp; 4 à 10 charactères. <br />
+                        (lettres, _ , -)
                     </p>
 
-                    <label htmlFor="email">
+                    <label htmlFor="email" className='label'>
                         Email :
-                        <FontAwesomeIcon icon={ faCheck } className={ validEmail ? 'valid' : 'hide' } />
-                        <FontAwesomeIcon icon={ faTimes } className={ validEmail || !email ? 'hide' : 'invalid' } />
+                        <FontAwesomeIcon icon={ faCheck } className={ validEmail ? 'valid' : 'hidden' } />
+                        <FontAwesomeIcon icon={ faTimes } className={ validEmail || !email ? 'hidden' : 'invalid' } />
                     </label>
-                    <input
+                    <input className='input'
                         type="email"
                         id="email"
                         onChange={ ( e ) => setEmail( e.target.value ) }
@@ -151,15 +160,15 @@ function Signup() {
                     />
                     <p id="emailnote" className={ emailFocus && !validEmail ? 'instructions' : 'offscreen' }>
                         <FontAwesomeIcon icon={ faInfoCircle } />
-                        doit avoir un format email valide.<br />
+                        &nbsp; doit avoir un format email valide.<br />
                     </p>
 
-                    <label htmlFor="password">
+                    <label htmlFor="password" className='label'>
                         Mot de passe :
-                        <FontAwesomeIcon icon={ faCheck } className={ validPwd ? 'valid' : 'hide' } />
-                        <FontAwesomeIcon icon={ faTimes } className={ validPwd || !password ? 'hide' : 'invalid' } />
+                        <FontAwesomeIcon icon={ faCheck } className={ validPwd ? 'valid' : 'hidden' } />
+                        <FontAwesomeIcon icon={ faTimes } className={ validPwd || !password ? 'hidden' : 'invalid' } />
                     </label>
-                    <input
+                    <input className='input'
                         type="password"
                         id="password"
                         onChange={ ( e ) => setPassword( e.target.value ) }
@@ -172,20 +181,13 @@ function Signup() {
                     />
                     <p id="pwdnote" className={ pwdFocus && !validPwd ? 'instructions' : 'offscreen' }>
                         <FontAwesomeIcon icon={ faInfoCircle } />
-                        6 à 15 charactères.<br />
-                        au moins un nombre et une lettre
+                        &nbsp; 6 à 15 charactères. <br />
+                        (au moins un nombre et une lettre)
                     </p>
                     <br />
-                    <button disabled={ !validName || !validPwd ? true : false }>
-                        S'inscrire</button>
+                    <button className={ !validName || !validPwd || !validEmail ? 'self-center disabled' : 'btn btn:hover self-center mt-3' }>
+                        Valider</button>
                 </form>
-                <br />
-                <p>
-                    Déjà inscrit ? <br />
-                    <span className="line">
-                        <Link to="/login"> Se connecter </Link>
-                    </span>
-                </p>
             </section>
         ) }
     </>

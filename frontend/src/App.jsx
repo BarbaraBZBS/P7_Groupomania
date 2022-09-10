@@ -1,43 +1,63 @@
-//import Home from './pages/Home/index'
-import { Routes, Route } from 'react-router-dom'
-import Error from './components/Error'
-import Signup from './components/Signup'
-import Home from './pages/Home'
-import Layout from './components/Layout'
-import Login from './components/Login'
-import Unauthorized from './components/Unauthorized'
-import RequireAuth from './components/RequireAuth'
-import Admin from './components/Admin'
-import LinkPage from './components/Linkpage'
+import { useState, useEffect } from 'react'
+import axios from './api/axios'
+import { UidContext } from './context/AppContext'
+import Router from './components/Routes'
+import { useDispatch } from 'react-redux'
+import { getUser } from './actions/userActions'
+import { BallTriangle } from 'react-loader-spinner'
 
-const ROLES = {
-    'User': 2001,
-    'Editor': 1984,
-    'Admin': 5150
-}
 
 function App() {
-    return <Routes>
-        <Route path="/" element={ <Layout /> }>
-            {/* public routes */ }
-            <Route path="login" element={ <Login /> } />
-            <Route path="signup" element={ <Signup /> } />
-            <Route path="linkpage" element={ <LinkPage /> } />
-            <Route path="unauthorized" element={ <Unauthorized /> } />
+    const [ loading, setLoading ] = useState( true )
+    const [ uid, setUid ] = useState( null )
+    const dispatch = useDispatch()
 
-            {/* we want to protect these routes */ }
-            <Route element={ <RequireAuth allowedRoles={ [ ROLES.User ] } /> }>
-                <Route path="home" element={ <Home /> } />
-            </Route>
+    useEffect( () => {
+        //setLoading( true )
+        setTimeout( () => {
+            setLoading( false )
+        }, 5000 )
+    }, [] )
 
-            <Route element={ <RequireAuth allowedRoles={ [ ROLES.Admin ] } /> }>
-                <Route path="admin" element={ <Admin /> } />
-            </Route>
+    useEffect( () => {
+        const fetchTokenId = async () => {
+            try {
+                await axios.get( '/jwtid',
+                    { withCredentials: true }
+                )
+                    .then( ( res ) => {
+                        setUid( res.data )
+                        console.log( res )
+                        console.log( 'uid? : ', uid )
+                    } )
+            } catch ( err ) {
+                console.log( 'No token' )
+            }
+        }
+        fetchTokenId()
+        if ( uid ) dispatch( getUser( uid ) )
+    }, [ uid, dispatch ] )
 
-            {/* catch all */ }
-            <Route path="*" element={ <Error /> } />
-        </Route>
-    </Routes>
+    return <>
+        { loading ?
+            <div className='loader-spinner'>
+                <BallTriangle
+                    height={ 200 }
+                    width={ 200 }
+                    radius={ 5 }
+                    color="#4E5166"
+                    ariaLabel="ball-triangle-loading"
+                    wrapperClass={ {} }
+                    wrapperStyle=""
+                    visible={ true }
+                />
+            </div>
+            :
+            <UidContext.Provider value={ uid }>
+                <Router />
+            </UidContext.Provider>
+        }
+    </>
 }
 
 export default App
