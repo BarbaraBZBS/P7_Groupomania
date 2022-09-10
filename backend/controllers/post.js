@@ -6,6 +6,7 @@ const Like = require( '../models/like' );
 
 exports.getAllPosts = ( req, res ) => {
     Post.findAll( {
+        order: [ [ 'updatedAt', 'DESC' ] ],
         include: {
             model: User,
             attributes: [ 'username', 'email' ]
@@ -78,32 +79,42 @@ exports.createPost = async ( req, res, next ) => {
 
 exports.modifyPost = async ( req, res, next ) => {
     try {
-        const postObject = req.file ? {
-            ...JSON.parse( req.body.post ),
-            image: `${ req.protocol }://${ req.get( 'host' ) }/images/${ req.file.filename }`
-        } : { ...req.body };
+        let imagePath = '';
         await Post.findByPk( req.params.id )
             .then( ( post ) => {
-                post.update( {
-                    ...postObject,
-                    //userId: req.body.userId
-                } )
-                    .then( ( post ) => {
-                        if ( post ) {
-                            res.status( 201 ).json( post )
-                            console.log( 'success: post updated' )
-                        } else {
-                            res.status( 404 ).json( { message: 'Post not found' } )
-                        }
+                if ( req.file ) {
+                    if ( req.file.mimetype !== 'image/jpg' && req.file.mimetype !== 'image/jpeg' && req.file.mimetype !== 'image/png' ) {
+                        return res.status( 400 ).json( { message: "Mauvais type d'image !" } )
+                    }
+                    else {
+                        imagePath = `${ req.protocol }://${ req.get( "host" ) }/images/${ req.file.filename }`;
+                        post.update( {
+                            title: req.body.title,
+                            content: req.body.content,
+                            image: imagePath,
+                            userId: req.body.userId,
+                            postId: req.body.postId
+                        } )
+                        console.log( 'success, updated :', post )
+                        res.status( 200 ).json( { message: 'post updated !' } )
+                    }
+                }
+                else {
+                    post.update( {
+                        title: req.body.title,
+                        content: req.body.content,
                     } )
-                    .catch( error => res.status( 401 ).json( { error } ) );
-            } );
+                    console.log( 'success, updated :', post )
+                    res.status( 200 ).json( { message: 'post updated' } )
+                }
+            } )
     }
     catch ( error ) {
+        console.log( error )
         res.status( 400 ).json( { error } );
         console.log( 'error: post not updated', res.statusCode )
     }
-};
+}
 
 exports.deletePost = ( req, res ) => {
     Post.findByPk( req.params.id )
@@ -130,7 +141,7 @@ exports.deletePost = ( req, res ) => {
 }
 
 exports.likeStatusPost = async ( req, res ) => {
-    const userId = req.auth.userId;
+    const userId = req.body.userId;
     const postId = parseInt( req.params.id );
 
     if ( postId <= 0 ) {
@@ -145,10 +156,10 @@ exports.likeStatusPost = async ( req, res ) => {
                     .then( () => {
                         Post.findOne( { where: { id: postId } } )
                             .then( ( post ) => {
-                                post.update( { likes: sequelize.literal( 'likes - 1' ) } )
+                                post.update( { likes: sequelize.literal( 'likes - 1' ) } ) //, likers: `${ newArray }`
+                                res.status( 200 ).json( { message: 'post unliked !' } )
                             } )
                             .catch( error => res.status( 400 ).json( error ) )
-                        res.status( 200 ).json( { message: 'post unliked !' } )
                     } )
                     .catch( error => {
                         console.log( 'error : ', error )
@@ -163,16 +174,24 @@ exports.likeStatusPost = async ( req, res ) => {
                     .then( () => {
                         Post.findOne( { where: { id: postId } } )
                             .then( ( post ) => {
-                                post.update( { likes: sequelize.literal( 'likes + 1' ) } )
+                                post.update( { likes: sequelize.literal( 'likes + 1' ) } ) //, likers: `${ likersArray }` likers: userId , likers: `[ ${ userId }]` '{{“work”, “rah@gamil.com”}, {“other”, “aaa@gmail.com”}}’, ‘{85, 54, 45}’
+                                res.status( 201 ).json( { message: 'post liked !' } )
                             } )
                             .catch( error => res.status( 400 ).json( { error } ) )
-                        res.status( 201 ).json( { message: 'post liked !' } )
                     } )
                     .catch( error => {
                         res.status( 404 ).json( { error } )
                     } )
             }
         } )
-    console.log( postId )
-    console.log( userId )
+    // console.log( postId )
+    // console.log( userId )
+}
+
+exports.postLiked = ( req, res ) => {
+    const { userId, postId } = req.body
+    Like.findOne( { where: { postId: postId, userId: userId } } )
+        .then( ( liked ) => {
+            res.status( 200 ).json( liked )
+        } )
 }

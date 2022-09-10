@@ -29,8 +29,8 @@ function Logout() {
         }
     }
 
-    return <li className='li' onClick={ logout } aria-label='logout icon' role='navigation' tabindex="0">
-        <FontAwesomeIcon icon={ faRightFromBracket } className='icon' aria-label='logout icon' />
+    return <li className='li' onClick={ logout } aria-label='logout icon' role='navigation' tabIndex="0">
+        <FontAwesomeIcon icon={ faRightFromBracket } className='icon hover:text-appred' aria-label='logout icon' />
     </li>
 }
 

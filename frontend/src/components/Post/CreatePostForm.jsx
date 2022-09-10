@@ -25,16 +25,13 @@ const CreatePostForm = () => {
 
     const handlePost = async () => {
         try {
-
             if ( message ) {
                 const data = new FormData()
-
                 data.append( 'title', title )
                 data.append( 'content', message )
                 if ( file ) data.append( 'image', file )
                 data.append( 'userId', userData.id )
                 // console.log( data )
-
                 await dispatch( addPost( data ) )
                 dispatch( getPosts() )
                 cancelPost()
@@ -63,7 +60,7 @@ const CreatePostForm = () => {
             <FontAwesomeIcon icon={ faFan } className='animate-spin' />
         ) : (
             <section>
-                <div aria-label='create new post' role='form' tabindex="0" className='new-post-card'>
+                <div aria-label='create new post' role='form' tabIndex="0" className='new-post-card'>
                     <h1 className='text-md font-semibold mb-2 sm:title2'>Ajouter un nouveau message </h1>
                     <input className='input mb-2 shadow-md'
                         type='text'
@@ -119,9 +116,9 @@ const CreatePostForm = () => {
                             aria-live='assertive'>{ error }</p> }
                         <div className='flex flex-col sm:flex-row'>
                             { title || message || postImg ? (
-                                <button className='btn-delete my-0 mx-0.5 sm:mx-2' onClick={ cancelPost }>Annuler</button>
+                                <button className='btn-delete my-0 mx-0.5 w-24 sm:w-32 sm:mx-2' onClick={ cancelPost }>Annuler</button>
                             ) : null }
-                            <button className='btn btn-hover my-0 mx-0.5 sm:mx-2' onClick={ handlePost }>Envoyer</button>
+                            <button className='btn btn-hover my-0 mx-0.5 w-24 sm:w-32 sm:mx-2' onClick={ handlePost }>Envoyer</button>
                         </div>
                     </div>
                 </div>

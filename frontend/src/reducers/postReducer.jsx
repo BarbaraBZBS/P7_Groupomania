@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { DELETE_POST, GET_POSTS, UPDATE_POST_CONTENT, UPDATE_POST_TITLE } from '../actions/postActions'
+import { DELETE_POST, GET_POSTS, LIKE_POST, UPDATE_POST_CONTENT, UPDATE_POST_TITLE, UPDATE_POST_IMAGE } from '../actions/postActions'
 
 const initialState = {}
 
@@ -24,6 +24,18 @@ export default function postReducer( state = initialState, action ) {
                         content: action.payload.content
                     }
                 } else return post
+            } )
+        case UPDATE_POST_IMAGE:
+            return {
+                ...state,
+                image: action.payload
+            }
+        case LIKE_POST:
+            return state.map( ( post ) => {
+                if ( post.id === action.payload.postId ) {
+                    return { ...post }
+                }
+                return post
             } )
         case DELETE_POST:
             return state.filter( ( post ) => post.id !== action.payload.postId )

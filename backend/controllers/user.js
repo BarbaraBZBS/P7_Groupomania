@@ -130,7 +130,7 @@ exports.getAllUsers = ( req, res, next ) => {
                 res.status( 200 ).json( users )
             }
             else {
-                res.status( 401 ).json( { message: 'No users found' } )
+                res.status( 404 ).json( { message: 'No users found' } )
             }
         } )
         .catch( error => res.status( 400 ).json( { error } ) )

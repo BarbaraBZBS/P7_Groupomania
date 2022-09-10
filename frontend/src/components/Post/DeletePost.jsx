@@ -17,8 +17,8 @@ const DeletePost = ( props ) => {
             userDeletePost()
         } else return
     } }>
-        <span class="sr-only">delete post icon</span>
-        <FontAwesomeIcon icon={ faTrashCan } className='text-appred cursor-pointer' />
+        <span className="sr-only">delete post icon</span>
+        <FontAwesomeIcon icon={ faTrashCan } className='text-appred hover:text-red-600 cursor-pointer' />
     </button>
 }
 

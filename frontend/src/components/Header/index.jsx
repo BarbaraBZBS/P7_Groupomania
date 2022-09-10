@@ -24,7 +24,7 @@ function Header() {
                 <ul className='li flex items-center m-2 sm:m-7' aria-label='navigation links'>
                     <li>
                         <NavLink to='/profil'>
-                            <h5 className='text-lg mr-3 mb-2 sm:my-0 sm:mr-12 font-semibold'>Bienvenue { userData.username }</h5>
+                            <h5 className='text-lg mr-3 mb-2 sm:my-0 sm:mr-12 font-semibold hover:text-violet-800'>Bienvenue { userData.username }</h5>
                         </NavLink>
                     </li>
                     <Logout />
@@ -33,7 +33,7 @@ function Header() {
                 <ul className='li flex items-center m-7' aria-label='navigation links'>
                     <li>
                         <NavLink to='/profil'>
-                            <FontAwesomeIcon icon={ faRightToBracket } className='icon' aria-label='connection icon' />
+                            <FontAwesomeIcon icon={ faRightToBracket } className='icon hover:text-violet-900' aria-label='connection icon' />
                         </NavLink>
                     </li>
                 </ul>

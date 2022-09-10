@@ -15,4 +15,6 @@ router.delete( '/:id', postCtrl.deletePost );
 
 router.post( '/:id/like', postCtrl.likeStatusPost );
 
+router.post( '/liked', postCtrl.postLiked );
+
 module.exports = router;

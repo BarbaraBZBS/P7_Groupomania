@@ -15,11 +15,30 @@ module.exports = {
                 scale: {
                     from: { transform: 'scaleY( 0 )' },
                     to: { transform: 'scaleY( 1 )' }
+                },
+                fill: {
+                    '0%': { opacity: 0 },
+                    '25%': {
+                        opacity: 0.2,
+                        transform: 'scale(0.3)'
+                    },
+                    '45%': {
+                        opacity: 0.55,
+                        transform: 'scale(0.5)'
+                    },
+                    '75%': {
+                        opacity: 0.85,
+                        transform: 'scale(0.75)'
+                    },
+                    '100%': {
+                        transform: 'scale(1.2)'
+                    }
                 }
             },
             animation: {
                 spin: 'spin infinite 1.3s linear',
-                scale: 'scale 1s ease forwards'
+                scale: 'scale 1s ease forwards',
+                fill: 'fill .1s forwards',
             }
         },
         fontFamily: {

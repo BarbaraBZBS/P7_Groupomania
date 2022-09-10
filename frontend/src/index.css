@@ -11,7 +11,7 @@
         @apply flex flex-col justify-center items-center mt-8 mb-12 p-3 sm:ml-0 sm:mr-10 sm:my-10 md:ml-0 md:mr-12 md:my-12 lg:my-14 lg:ml-[8%] lg:mr-[14%]
     }
     .btn {
-        @apply w-32 p-2 border-2 border-white bg-indigo-500 text-appblck rounded-xl active:bg-appstone mt-4 cursor-pointer
+        @apply w-32 p-2 border-2 border-white bg-indigo-500 text-appblck rounded-xl active:bg-appstone mb-2 cursor-pointer
     }
     .btn-hover {
         @apply hover:bg-indigo-800 hover:text-white
@@ -65,7 +65,7 @@
         @apply text-2xl font-semibold mb-4
     }
     .icon {
-        @apply cursor-pointer text-2xl
+        @apply cursor-pointer text-xl sm:text-2xl
     }
     .userupd-container {
         @apply flex justify-center items-center flex-col text-center
@@ -74,25 +74,25 @@
         @apply border-2 rounded-lg p-3 w-3/4 m-auto shadow-md bg-violet-200 sm:w-[490px]
     }
     .leftnav-icon {
-        @apply text-lg sm:text-3xl text-appstone
+        @apply text-lg sm:text-3xl text-appstone hover:text-appred
     }
     .leftnav-active {
         @apply bg-transparent rounded-2xl border-l-4 pl-2 border-l-appred absolute animate-scale
     }
     .new-post-card {
-        @apply flex flex-col bg-appoppink py-4 px-2 sm:px-10 mb-12 rounded-2xl shadow-lg w-[85%] min-w-[211px] max-w-[510px] sm:min-w-[482px] sm:max-w-[482px] md:min-w-[590px] md:max-w-[590px] lg:min-w-[700px] lg:max-w-3xl
+        @apply flex flex-col bg-appoppink py-4 m-auto px-2 sm:px-10 mb-12 rounded-2xl shadow-lg w-[85%] min-w-[209px] max-w-[510px] sm:min-w-[482px] sm:max-w-[482px] md:min-w-[590px] md:max-w-[590px] lg:min-w-[700px] lg:max-w-3xl
     }
     .new-post-overview {
-        @apply bg-white border-2 border-appstone rounded-2xl mt-2 mb-3 shadow-md
+        @apply bg-white border-2 border-appstone rounded-2xl mt-2 mb-3 shadow-md p-1 text-sm sm:text-xl
     }
     .card-img {
-        @apply object-cover flex justify-center self-center items-center rounded-xl m-auto h-60 max-w-[95%] sm:h-80 sm:max-w-[472px] md:max-w-[580px] lg:max-w-[690px]
+        @apply object-cover flex justify-center self-center items-center rounded-xl m-auto h-60 max-w-[95%] sm:h-80 sm:max-w-[430px] md:max-w-[530px] lg:max-w-[690px]
     }
     .post-card {
-        @apply bg-appsand border-2 border-gray-300 rounded-2xl mt-2 shadow-md mb-6 mx-auto max-w-[88%] sm:max-w-[482px] md:max-w-[590px] lg:max-w-3xl
+        @apply bg-appsand border-2 border-gray-300 rounded-2xl mt-2 shadow-md mb-6 m-auto min-w-[212px] max-w-[80%] sm:max-w-[482px] md:max-w-[590px] lg:max-w-3xl
     }
     .card-header {
-        @apply flex flex-row justify-evenly text-center
+        @apply flex flex-col sm:flex-row justify-evenly text-center
     }
     .loader-spinner {
         @apply flex justify-center h-screen items-center m-auto z-[999]
