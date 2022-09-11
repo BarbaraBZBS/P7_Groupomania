@@ -86,7 +86,7 @@
         @apply bg-white border-2 border-appstone rounded-2xl mt-2 mb-3 shadow-md p-1 text-sm sm:text-xl
     }
     .card-img {
-        @apply object-cover flex justify-center self-center items-center rounded-xl m-auto h-60 max-w-[95%] sm:h-80 sm:max-w-[430px] md:max-w-[530px] lg:max-w-[690px]
+        @apply object-cover flex justify-center self-center items-center rounded-xl m-auto h-60 max-w-[95%] sm:h-80 sm:max-w-[350px] md:max-w-[460px] lg:max-w-[570px]
     }
     .post-card {
         @apply bg-appsand border-2 border-gray-300 rounded-2xl mt-2 shadow-md mb-6 m-auto min-w-[212px] max-w-[80%] sm:max-w-[482px] md:max-w-[590px] lg:max-w-3xl
