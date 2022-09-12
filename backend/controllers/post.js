@@ -156,7 +156,7 @@ exports.likeStatusPost = async ( req, res ) => {
                     .then( () => {
                         Post.findOne( { where: { id: postId } } )
                             .then( ( post ) => {
-                                post.update( { likes: sequelize.literal( 'likes - 1' ) } ) //, likers: `${ newArray }`
+                                post.update( { likes: sequelize.literal( 'likes - 1' ) } )
                                 res.status( 200 ).json( { message: 'post unliked !' } )
                             } )
                             .catch( error => res.status( 400 ).json( error ) )
@@ -174,7 +174,7 @@ exports.likeStatusPost = async ( req, res ) => {
                     .then( () => {
                         Post.findOne( { where: { id: postId } } )
                             .then( ( post ) => {
-                                post.update( { likes: sequelize.literal( 'likes + 1' ) } ) //, likers: `${ likersArray }` likers: userId , likers: `[ ${ userId }]` '{{“work”, “rah@gamil.com”}, {“other”, “aaa@gmail.com”}}’, ‘{85, 54, 45}’
+                                post.update( { likes: sequelize.literal( 'likes + 1' ) } )
                                 res.status( 201 ).json( { message: 'post liked !' } )
                             } )
                             .catch( error => res.status( 400 ).json( { error } ) )

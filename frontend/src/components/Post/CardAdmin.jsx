@@ -42,7 +42,7 @@ const CardAdmin = ( { post } ) => {
             data.append( 'title', post.title )
             data.append( 'content', post.content )
             data.append( 'image', imgUpdate )
-            data.append( 'userId', post.userId ) //? usersData.id/userData.id
+            data.append( 'userId', post.userId )
             data.append( 'postId', post.id )
             console.log( data, post.id )
             await dispatch( updatePostImage( data, post.id ) )

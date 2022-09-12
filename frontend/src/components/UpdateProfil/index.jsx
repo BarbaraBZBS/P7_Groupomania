@@ -15,8 +15,11 @@ const UpdateProfil = () => {
     const dispatch = useDispatch()
 
     const HandleUpdate = () => {
-        if ( updateForm ) {
+        if ( username ) {
             dispatch( updateName( userData.id, username ) )
+            setUpdateForm( false )
+        }
+        else {
             setUpdateForm( false )
         }
     }
