@@ -16,9 +16,4 @@ const Post = sequelize.define( "post", {
     }
 } );
 
-Post.sync()
-    .then( () => {
-        console.log( `Database & posts table created!` );
-    } );
-
 module.exports = Post;

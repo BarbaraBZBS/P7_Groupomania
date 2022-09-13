@@ -8,7 +8,10 @@ const cookieParser = require( 'cookie-parser' );
 const userRoutes = require( './routes/user' );
 const postRoutes = require( './routes/post' );
 //models
-
+const User = require( './models/user' );
+const Post = require( './models/post' );
+const Like = require( './models/like' );
+const Role = require( './models/role' );
 //middleware
 const errorHandler = require( './middleware/errorHandler' );
 const requireAuth = require( './middleware/requireAuth' );
@@ -50,6 +53,50 @@ app.get( '/jwtid', requireAuth, ( req, res ) => {
 app.use( '/images', express.static( path.join( __dirname, 'images' ) ) );
 app.use( '/api/auth', userRoutes );
 app.use( '/api/posts', postRoutes );
+
+
+// models links
+User.hasMany( Post, {
+    foreignKey: 'userId'
+} );
+Post.belongsTo( User, {
+    foreignKey: 'userId'
+} );
+User.belongsToMany( Post, {
+    through: Like,
+    foreignKey: 'userId',
+    otherKey: 'postId'
+} );
+Post.belongsToMany( User, {
+    through: Like,
+    foreignKey: 'postId',
+    otherKey: 'userId'
+} );
+Like.belongsTo( User, {
+    foreignKey: 'userId',
+    as: 'user'
+} );
+Like.belongsTo( Post, {
+    foreignKey: 'postId',
+    as: 'post'
+} );
+User.belongsToMany( Role, {
+    through: 'user_roles',
+    foreignKey: 'userId',
+    otherKey: 'roleId'
+} );
+Role.belongsToMany( User, {
+    through: 'user_roles',
+    foreignKey: 'roleId',
+    otherKey: 'userId'
+} );
+
+//post needs to be synced after routes
+Post.sync()
+    .then( () => {
+        console.log( `Database & posts table created!` );
+    } );
+
 
 app.use( errorHandler );
 

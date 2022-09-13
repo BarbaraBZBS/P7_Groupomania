@@ -1,7 +1,5 @@
 const sequelize = require( '../database/sequelize' );
 const DataTypes = require( 'sequelize' );
-const User = require( '../models/user' );
-const Post = require( '../models/post' );
 
 const Like = sequelize.define( "like", {
     id: {
@@ -29,25 +27,6 @@ const Like = sequelize.define( "like", {
 } );
 
 module.exports = Like;
-
-User.belongsToMany( Post, {
-    through: Like,
-    foreignKey: 'userId',
-    otherKey: 'postId'
-} );
-Post.belongsToMany( User, {
-    through: Like,
-    foreignKey: 'postId',
-    otherKey: 'userId'
-} );
-Like.belongsTo( User, {
-    foreignKey: 'userId',
-    as: 'user'
-} );
-Like.belongsTo( Post, {
-    foreignKey: 'postId',
-    as: 'post'
-} );
 
 Like.sync()
     .then( () => {

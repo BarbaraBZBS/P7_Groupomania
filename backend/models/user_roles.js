@@ -26,9 +26,5 @@ const User_Roles = sequelize.define( "user_roles", {
     timestamps: false
 } );
 
-// User_Roles.sync()
-//     .then( () => {
-//         console.log( `Database & user_roles table created!` );
-//     } );
 module.exports = User_Roles;
 

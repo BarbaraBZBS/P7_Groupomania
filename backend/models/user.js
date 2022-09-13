@@ -28,25 +28,6 @@ const User = sequelize.define( "user", {
 
 module.exports = User;
 
-User.hasMany( Post, {
-    foreignKey: 'userId',
-} );
-Post.belongsTo( User, {
-    foreignKey: 'userId',
-} );
-User.belongsToMany( Role, {
-    through: 'user_roles',
-    foreignKey: 'userId',
-    otherKey: 'roleId'
-} );
-Role.belongsToMany( User, {
-    through: 'user_roles',
-    foreignKey: 'roleId',
-    otherKey: 'userId'
-} );
-
-
-
 ( async () => {
     await User.sync( { force: false } )
     console.log( `Database & users table created!` );
@@ -87,23 +68,7 @@ Role.belongsToMany( User, {
                 console.log( "Compte admin déjà existant !" );
             }
         } );
-    // roleSet()
 } )();
-
-
-// const roleSet = () => {
-//     User.findOne( { Where: { email: "admin@groupomania.com" } } )
-//         .then( ( user ) => {
-//             Role.findOne( { where: { name: user.role } } )
-//                 .then( async ( role ) => {
-//                     console.log( role );
-//                     await user.setRoles( role ).then( () => {
-//                         console.log( 'ok' )
-//                         //res.send( { message: 'Utilisateur enregistré avec succès' } )
-//                     } );
-//                 } );
-//         } )
-// }
 
 User_Roles.sync()
     .then( () => {

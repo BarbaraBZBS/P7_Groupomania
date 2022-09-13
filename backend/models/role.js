@@ -1,7 +1,5 @@
 const sequelize = require( '../database/sequelize' );
 const DataTypes = require( 'sequelize' );
-const User = require( '../models/user' );
-const User_Roles = require( '../models/user_roles' );
 
 const Role = sequelize.define( "role", {
     name: {
@@ -30,8 +28,3 @@ async function initial() {
         name: "admin"
     } );
 };
-
-User_Roles.sync()
-    .then( () => {
-        console.log( `Database & user_roles table created!` );
-    } );
