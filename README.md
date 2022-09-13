@@ -1,6 +1,6 @@
 # P7_Groupomania
 
-Download repository then
+Download repository then:
 
 ---- in backend folder root: ----
 
@@ -8,12 +8,16 @@ Download repository then
 
 - create folder images
 
-- create .env folder and paste:
+- create .env file and paste:
 PORT=8000
 TOKEN_SECRET='my_secretrandom_secrettoken'
 CLIENT_URL=http://localhost:3000
+ADMINPASS='ad7mi9n2'
 
 - yarn start / npm start
+
+-- an admin account will be automatically generated --
+
 
 ---- in frontend folder root: ----
 
@@ -25,5 +29,6 @@ CLIENT_URL=http://localhost:3000
 REACT_APP_API_URL=http://localhost:8000
 
 - yarn start / npm start
+
 
 ---> repo (branch main) : https://github.com/BarbaraBZBS/P7_Groupomania.git

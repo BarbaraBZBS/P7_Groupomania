@@ -1,7 +1,7 @@
 const sequelize = require( '../database/sequelize' );
 const DataTypes = require( 'sequelize' );
 
-module.exports = sequelize.define( "post", {
+const Post = sequelize.define( "post", {
     title: {
         type: DataTypes.TEXT, allowNull: true, defaultValue: ""
     },
@@ -15,3 +15,10 @@ module.exports = sequelize.define( "post", {
         type: DataTypes.INTEGER, defaultValue: 0
     }
 } );
+
+Post.sync()
+    .then( () => {
+        console.log( `Database & posts table created!` );
+    } );
+
+module.exports = Post;

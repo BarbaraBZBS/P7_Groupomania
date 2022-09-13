@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { faCheck, faTimes, faInfoCircle, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTimes, faInfoCircle, faThumbsUp, faGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from '../../api/axios'
 import Login from '../Login'
@@ -28,6 +28,9 @@ function Signup() {
 
     const [ errMsg, setErrMsg ] = useState( '' )
     const [ success, setSuccess ] = useState( false )
+    const [ logState, setLogState ] = useState()
+    const [ load, setLoad ] = useState( false )
+
 
     useEffect( () => {
         userRef.current.focus()
@@ -60,6 +63,7 @@ function Signup() {
 
     const handleSubmit = async ( e ) => {
         e.preventDefault()
+        setLoad( true )
         console.log( username, email, password )
         // if button enabled with JS hack
         const v1 = USER_REGEX.test( username )
@@ -97,6 +101,11 @@ function Signup() {
         }
     }
 
+    useEffect( () => {
+        load && setLogState( 'Signing up' )
+    }, [ load ] )
+
+
     return <>
         { success ? (
             < div className='flex flex-col'>
@@ -115,6 +124,10 @@ function Signup() {
             </div>
         ) : (
             <section>
+                <div className='logstate-container'>
+                    { logState === 'Signing up' ? <FontAwesomeIcon icon={ faGear }
+                        className='animate-spin text-appstone text-2xl' /> : '' }
+                </div>
                 <p ref={ errRef } className={ errMsg ? 'errMsg' : 'offscreen' } aria-live="assertive">{ errMsg }</p>
                 <h1 className='title2 sm:title1 text-center'>Inscription</h1>
                 <form className='form' onSubmit={ handleSubmit }>

@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import axios from '../../api/axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGear } from '@fortawesome/free-solid-svg-icons'
 
 const LOGIN_URL = '/api/auth/login'
 
@@ -10,6 +12,8 @@ function Login() {
     const [ email, setEmail ] = useState( '' )
     const [ password, setPassword ] = useState( '' )
     const [ errMsg, setErrMsg ] = useState( '' )
+    const [ logState, setLogState ] = useState()
+    const [ load, setLoad ] = useState( false )
 
     useEffect( () => {
         userRef.current.focus()
@@ -21,6 +25,7 @@ function Login() {
 
     const handleSubmit = async ( e ) => {
         e.preventDefault()
+        setLoad( true )
         console.log( email, password )
         try {
             const response = await axios.post( LOGIN_URL,
@@ -50,7 +55,15 @@ function Login() {
         }
     }
 
+    useEffect( () => {
+        load && setLogState( 'Logging in' )
+    }, [ load ] )
+
     return <section>
+        <div className='logstate-container'>
+            { logState === 'Logging in' ? <FontAwesomeIcon icon={ faGear }
+                className='animate-spin text-appstone text-2xl' /> : '' }
+        </div>
         <p ref={ errRef } className={ errMsg ? 'errMsg' : 'offscreen' }
             aria-live='assertive'>{ errMsg }</p>
         <h1 className='title2 sm:title1 text-center'> Connexion </h1>

@@ -1,7 +1,12 @@
 const sequelize = require( '../database/sequelize' );
 const DataTypes = require( 'sequelize' );
+const bcrypt = require( 'bcrypt' );
+const Post = require( '../models/post' );
+const Role = require( '../models/role' );
+const User_Roles = require( '../models/user_roles' )
 
-module.exports = sequelize.define( "user", {
+
+const User = sequelize.define( "user", {
     username: {
         type: DataTypes.STRING, allowNull: false, unique: true,
     },
@@ -21,4 +26,86 @@ module.exports = sequelize.define( "user", {
     timestamps: false,
 } );
 
+module.exports = User;
 
+User.hasMany( Post, {
+    foreignKey: 'userId',
+} );
+Post.belongsTo( User, {
+    foreignKey: 'userId',
+} );
+User.belongsToMany( Role, {
+    through: 'user_roles',
+    foreignKey: 'userId',
+    otherKey: 'roleId'
+} );
+Role.belongsToMany( User, {
+    through: 'user_roles',
+    foreignKey: 'roleId',
+    otherKey: 'userId'
+} );
+
+
+
+( async () => {
+    await User.sync( { force: false } )
+    console.log( `Database & users table created!` );
+    User.findOne( { Where: { email: "admin@groupomania.com" } } )
+        .then( ( user ) => {
+            if ( !user ) {
+                console.log( "Compte admin inexistant !" );
+                bcrypt
+                    .hash( process.env.ADMINPASS, 15 )
+                    .then( ( hash ) => {
+                        User.create( {
+                            username: "Gr-Admin",
+                            email: "admin@groupomania.com",
+                            password: hash,
+                            role: "admin",
+                        } )
+                            .then( ( user ) => {
+                                Role.findOne( { where: { name: user.role } } )
+                                    .then( ( role ) => {
+                                        User_Roles.create( {
+                                            roleId: role.id,
+                                            userId: user.id
+                                        } )
+                                        //res.status( 200 ).json( { message: "Success: admin created !" } );
+                                        console.log( "Compte admin créé !" );
+                                    } )
+                                    .catch( error => console.log( error ) )
+                            } )
+                            .catch( ( error ) => {
+                                console.log( "Compte admin NON créé !" );
+                                //res.status(401).json({ message: "Admin non créé !" });
+                            } );
+                    } )
+                    .catch( ( error ) => {
+                        console.log( "Erreur Hash MDP !" );
+                    } );
+            } else {
+                console.log( "Compte admin déjà existant !" );
+            }
+        } );
+    // roleSet()
+} )();
+
+
+// const roleSet = () => {
+//     User.findOne( { Where: { email: "admin@groupomania.com" } } )
+//         .then( ( user ) => {
+//             Role.findOne( { where: { name: user.role } } )
+//                 .then( async ( role ) => {
+//                     console.log( role );
+//                     await user.setRoles( role ).then( () => {
+//                         console.log( 'ok' )
+//                         //res.send( { message: 'Utilisateur enregistré avec succès' } )
+//                     } );
+//                 } );
+//         } )
+// }
+
+User_Roles.sync()
+    .then( () => {
+        console.log( `Database & user_roles table created!` );
+    } );
