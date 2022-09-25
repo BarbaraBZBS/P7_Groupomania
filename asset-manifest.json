@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/P7_Groupomania/static/css/main.6ce34d94.css",
+    "main.js": "/P7_Groupomania/static/js/main.46115937.js",
+    "static/media/icon-left-font.svg": "/P7_Groupomania/static/media/icon-left-font.6e0f4fca0d8caba4568d04670f1992e4.svg",
+    "index.html": "/P7_Groupomania/index.html",
+    "main.6ce34d94.css.map": "/P7_Groupomania/static/css/main.6ce34d94.css.map",
+    "main.46115937.js.map": "/P7_Groupomania/static/js/main.46115937.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6ce34d94.css",
+    "static/js/main.46115937.js"
+  ]
+}
