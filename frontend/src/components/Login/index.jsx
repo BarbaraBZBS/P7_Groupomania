@@ -40,6 +40,8 @@ function Login() {
             setPassword( '' )
             window.location = '/'
         } catch ( err ) {
+            setLoad( false )
+            setLogState()
             if ( !err?.response ) {
                 console.log( err )
                 setErrMsg( 'Pas de réponse du serveur !' )

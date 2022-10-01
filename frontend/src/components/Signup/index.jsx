@@ -90,6 +90,8 @@ function Signup() {
             setEmail( '' )
             setPassword( '' )
         } catch ( err ) {
+            setLoad( false )
+            setLogState()
             if ( !err?.response ) {
                 setErrMsg( 'Pas de réponse du serveur' )
             } else if ( err.response?.status === 409 ) {
@@ -116,7 +118,6 @@ function Signup() {
                         Vous pouvez vous connecter.
                     </h4>
                 </div>
-
                 <br />
                 <div>
                     <Login />

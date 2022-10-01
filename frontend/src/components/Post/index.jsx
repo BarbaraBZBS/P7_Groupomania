@@ -67,10 +67,10 @@ const Card = ( { post } ) => {
             ) : (
                 <>
                     <div className='card-header mt-3 mb-4'>
-                        <div className='font-semibold mx-1 px-1'>
+                        <div className='mx-1 px-1'>
                             { !isEmpty( usersData[ 0 ] ) &&
                                 usersData.map( ( user ) => {
-                                    if ( user.id === post.userId ) return 'De : ' + user.username
+                                    if ( user.id === post.userId ) return <span><span className='italic'>{ 'De : ' }</span> <strong>{ user.username }</strong></span>
                                     else return null
                                 } ) }
                         </div>
@@ -78,7 +78,7 @@ const Card = ( { post } ) => {
                             <>
                                 <div className='mx-1 px-1' onClick={ () => ( userData.id === post.userId &&
                                     ( setIsTitleEditable( !isTitleEditable ) ) ) }>
-                                    { post.title }
+                                    <strong>{ post.title }</strong>
                                 </div>
                             </>
                         ) }
